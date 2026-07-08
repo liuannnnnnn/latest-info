@@ -1,0 +1,1114 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GitHub 热门项目三榜联合分析报告 - 2026.07.08</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #0d1117; color: #c9d1d9; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; line-height: 1.6; padding: 24px; }
+  a { color: #58a6ff; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  .header { text-align: center; padding: 40px 0 30px; border-bottom: 1px solid #21262d; margin-bottom: 32px; }
+  .header h1 { font-size: 28px; color: #f0f6fc; margin-bottom: 8px; }
+  .header .subtitle { color: #8b949e; font-size: 15px; }
+
+  /* Stats Cards */
+  .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 36px; }
+  .stat-card { background: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 20px; text-align: center; }
+  .stat-card .stat-value { font-size: 32px; font-weight: 700; color: #58a6ff; }
+  .stat-card .stat-label { font-size: 13px; color: #8b949e; margin-top: 4px; }
+  .stat-card.orange .stat-value { color: #f0883e; }
+  .stat-card.green .stat-value { color: #3fb950; }
+  .stat-card.purple .stat-value { color: #bc8cff; }
+
+  /* Section Headers */
+  .section-title { font-size: 20px; color: #f0f6fc; margin: 36px 0 16px; padding-bottom: 8px; border-bottom: 1px solid #21262d; }
+
+  /* Cross-list highlight */
+  .cross-list-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 12px; margin-bottom: 24px; }
+  .cross-item { background: #161b22; border: 1px solid #30363d; border-radius: 6px; padding: 14px 16px; display: flex; align-items: center; gap: 12px; }
+  .cross-item .rank { font-size: 18px; font-weight: 700; color: #484f58; min-width: 28px; }
+  .cross-item .info { flex: 1; }
+  .cross-item .name { font-weight: 600; color: #58a6ff; font-size: 14px; }
+  .cross-item .sources { display: flex; gap: 4px; margin-top: 4px; flex-wrap: wrap; }
+  .cross-item .stars { font-size: 13px; color: #8b949e; white-space: nowrap; }
+
+  /* Tags */
+  .tag { display: inline-block; padding: 2px 8px; border-radius: 12px; font-size: 11px; font-weight: 600; }
+  .tag-sh { background: rgba(240,136,62,0.15); color: #f0883e; }
+  .tag-gh-daily { background: rgba(56,139,253,0.15); color: #58a6ff; }
+  .tag-gh-weekly { background: rgba(63,185,80,0.15); color: #3fb950; }
+
+  /* Project Cards */
+  .project-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(440px, 1fr)); gap: 16px; margin-bottom: 32px; }
+  .project-card { background: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 20px; transition: border-color 0.2s; }
+  .project-card:hover { border-color: #484f58; }
+  .project-card .card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
+  .project-card .card-title { font-size: 16px; font-weight: 700; }
+  .project-card .card-title a { color: #58a6ff; }
+  .project-card .card-tags { display: flex; gap: 4px; flex-wrap: wrap; }
+  .project-card .card-desc { font-size: 13px; color: #8b949e; margin-bottom: 12px; line-height: 1.5; }
+  .project-card .card-meta { display: flex; flex-wrap: wrap; gap: 14px; font-size: 12px; color: #8b949e; }
+  .project-card .card-meta .meta-item { display: flex; align-items: center; gap: 4px; }
+  .lang-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+  .lang-python { background: #3572A5; }
+  .lang-typescript { background: #3178c6; }
+  .lang-javascript { background: #f1e05a; }
+  .lang-shell { background: #89e051; }
+  .lang-rust { background: #dea584; }
+  .lang-swift { background: #F05138; }
+  .lang-csharp { background: #178600; }
+  .lang-html { background: #e34c26; }
+  .lang-markdown { background: #083fa1; }
+  .lang-css { background: #563d7c; }
+  .lang-powershell { background: #012456; }
+  .lang-mdx { background: #fcb32c; }
+
+  .feature-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 10px; }
+  .feature-tag { background: rgba(56,139,253,0.08); border: 1px solid rgba(56,139,253,0.2); color: #79c0ff; padding: 2px 8px; border-radius: 4px; font-size: 11px; }
+
+  .new-stars { margin-top: 8px; font-size: 12px; }
+  .new-stars span { margin-right: 10px; }
+
+  /* Tables */
+  .table-wrapper { overflow-x: auto; margin-bottom: 24px; }
+  table { width: 100%; border-collapse: collapse; background: #161b22; border: 1px solid #30363d; border-radius: 8px; overflow: hidden; }
+  th { background: #1c2128; color: #f0f6fc; font-size: 13px; font-weight: 600; padding: 10px 14px; text-align: left; border-bottom: 1px solid #30363d; }
+  td { padding: 10px 14px; font-size: 13px; border-bottom: 1px solid #21262d; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: rgba(56,139,253,0.04); }
+
+  /* Insights */
+  .insights-list { list-style: none; margin-bottom: 32px; }
+  .insights-list li { background: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 16px 20px; margin-bottom: 10px; font-size: 14px; line-height: 1.6; }
+  .insights-list li strong { color: #f0f6fc; }
+  .insights-list .insight-num { display: inline-block; background: #30363d; color: #58a6ff; width: 24px; height: 24px; border-radius: 50%; text-align: center; line-height: 24px; font-size: 12px; font-weight: 700; margin-right: 10px; }
+
+  /* Footer */
+  .footer { text-align: center; padding: 24px 0; border-top: 1px solid #21262d; margin-top: 24px; color: #484f58; font-size: 12px; }
+
+  @media (max-width: 600px) {
+    .project-grid { grid-template-columns: 1fr; }
+    .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>GitHub 热门项目三榜联合分析报告</h1>
+  <div class="subtitle">Star-History Weekly &times; GitHub Trending Daily &times; GitHub Trending Weekly &nbsp;|&nbsp; 2026-07-08</div>
+</div>
+
+<!-- ========== 统计概览 ========== -->
+<div class="stats-grid">
+  <div class="stat-card">
+    <div class="stat-value">22</div>
+    <div class="stat-label">去重后项目总数</div>
+  </div>
+  <div class="stat-card orange">
+    <div class="stat-value">1,468</div>
+    <div class="stat-label">Star-History 周榜新增 Star</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-value">10,641</div>
+    <div class="stat-label">GitHub 日榜新增 Star</div>
+  </div>
+  <div class="stat-card green">
+    <div class="stat-value">44,840</div>
+    <div class="stat-label">GitHub 周榜新增 Star</div>
+  </div>
+  <div class="stat-card purple">
+    <div class="stat-value">11</div>
+    <div class="stat-label">跨榜项目数 (>=2 个榜单)</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-value">12</div>
+    <div class="stat-label">编程语言种类数</div>
+  </div>
+</div>
+
+<!-- ========== 跨榜项目高亮 ========== -->
+<h2 class="section-title">跨榜项目高亮 (11 个)</h2>
+<p style="color:#8b949e;font-size:13px;margin-bottom:14px;">以下项目同时出现在 2 个或 3 个榜单中，按跨榜数量降序排列。</p>
+
+<div class="cross-list-grid">
+  <!-- 三榜全上 (3) -->
+  <div class="cross-item">
+    <div class="rank">1</div>
+    <div class="info">
+      <div class="name"><a href="https://github.com/usestrix/strix">usestrix/strix</a></div>
+      <div class="sources">
+        <span class="tag tag-sh">SH-Weekly</span>
+        <span class="tag tag-gh-daily">GH-Daily</span>
+        <span class="tag tag-gh-weekly">GH-Weekly</span>
+      </div>
+    </div>
+    <div class="stars">38,773 ★</div>
+  </div>
+  <div class="cross-item">
+    <div class="rank">2</div>
+    <div class="info">
+      <div class="name"><a href="https://github.com/Zackriya-Solutions/meetily">Zackriya-Solutions/meetily</a></div>
+      <div class="sources">
+        <span class="tag tag-sh">SH-Weekly</span>
+        <span class="tag tag-gh-daily">GH-Daily</span>
+        <span class="tag tag-gh-weekly">GH-Weekly</span>
+      </div>
+    </div>
+    <div class="stars">21,170 ★</div>
+  </div>
+  <div class="cross-item">
+    <div class="rank">3</div>
+    <div class="info">
+      <div class="name"><a href="https://github.com/MadsLorentzen/ai-job-search">MadsLorentzen/ai-job-search</a></div>
+      <div class="sources">
+        <span class="tag tag-sh">SH-Weekly</span>
+        <span class="tag tag-gh-daily">GH-Daily</span>
+        <span class="tag tag-gh-weekly">GH-Weekly</span>
+      </div>
+    </div>
+    <div class="stars">12,489 ★</div>
+  </div>
+  <!-- 两榜 (8) -->
+  <div class="cross-item">
+    <div class="rank">4</div>
+    <div class="info">
+      <div class="name"><a href="https://github.com/asgeirtj/system_prompts_leaks">asgeirtj/system_prompts_leaks</a></div>
+      <div class="sources">
+        <span class="tag tag-sh">SH-Weekly</span>
+        <span class="tag tag-gh-daily">GH-Daily</span>
+      </div>
+    </div>
+    <div class="stars">53,416 ★</div>
+  </div>
+  <div class="cross-item">
+    <div class="rank">5</div>
+    <div class="info">
+      <div class="name"><a href="https://github.com/TencentCloud/CubeSandbox">TencentCloud/CubeSandbox</a></div>
+      <div class="sources">
+        <span class="tag tag-sh">SH-Weekly</span>
+        <span class="tag tag-gh-daily">GH-Daily</span>
+      </div>
+    </div>
+    <div class="stars">8,638 ★</div>
+  </div>
+  <div class="cross-item">
+    <div class="rank">6</div>
+    <div class="info">
+      <div class="name"><a href="https://github.com/diegosouzapw/OmniRoute">diegosouzapw/OmniRoute</a></div>
+      <div class="sources">
+        <span class="tag tag-sh">SH-Weekly</span>
+        <span class="tag tag-gh-daily">GH-Daily</span>
+      </div>
+    </div>
+    <div class="stars">13,321 ★</div>
+  </div>
+  <div class="cross-item">
+    <div class="rank">7</div>
+    <div class="info">
+      <div class="name"><a href="https://github.com/alibaba/page-agent">alibaba/page-agent</a></div>
+      <div class="sources">
+        <span class="tag tag-sh">SH-Weekly</span>
+        <span class="tag tag-gh-daily">GH-Daily</span>
+      </div>
+    </div>
+    <div class="stars">25,042 ★</div>
+  </div>
+  <div class="cross-item">
+    <div class="rank">8</div>
+    <div class="info">
+      <div class="name"><a href="https://github.com/openai/codex-plugin-cc">openai/codex-plugin-cc</a></div>
+      <div class="sources">
+        <span class="tag tag-sh">SH-Weekly</span>
+        <span class="tag tag-gh-daily">GH-Daily</span>
+      </div>
+    </div>
+    <div class="stars">26,722 ★</div>
+  </div>
+  <div class="cross-item">
+    <div class="rank">9</div>
+    <div class="info">
+      <div class="name"><a href="https://github.com/firecrawl/firecrawl">firecrawl/firecrawl</a></div>
+      <div class="sources">
+        <span class="tag tag-sh">SH-Weekly</span>
+        <span class="tag tag-gh-weekly">GH-Weekly</span>
+      </div>
+    </div>
+    <div class="stars">— ★</div>
+  </div>
+  <div class="cross-item">
+    <div class="rank">10</div>
+    <div class="info">
+      <div class="name"><a href="https://github.com/pannianntong/agent-reach">pannianntong/agent-reach</a></div>
+      <div class="sources">
+        <span class="tag tag-sh">SH-Weekly</span>
+        <span class="tag tag-gh-weekly">GH-Weekly</span>
+      </div>
+    </div>
+    <div class="stars">— ★</div>
+  </div>
+  <div class="cross-item">
+    <div class="rank">11</div>
+    <div class="info">
+      <div class="name"><a href="https://github.com/steipete/CodexBar">steipete/CodexBar</a></div>
+      <div class="sources">
+        <span class="tag tag-sh">SH-Weekly</span>
+        <span class="tag tag-gh-weekly">GH-Weekly</span>
+      </div>
+    </div>
+    <div class="stars">17,138 ★</div>
+  </div>
+</div>
+
+<!-- ========== 全量项目详情 ========== -->
+<h2 class="section-title">全量项目详情 (22 个)</h2>
+
+<div class="project-grid">
+
+<!-- 1. strix -->
+<div class="project-card">
+  <div class="card-header">
+    <div class="card-title"><a href="https://github.com/usestrix/strix">usestrix/strix</a></div>
+    <div class="card-tags">
+      <span class="tag tag-sh">SH-Weekly</span>
+      <span class="tag tag-gh-daily">GH-Daily</span>
+      <span class="tag tag-gh-weekly">GH-Weekly</span>
+    </div>
+  </div>
+  <div class="card-desc">AI 驱动的自动化渗透测试工具，支持多智能体协同编排，可自动完成信息收集、漏洞扫描、漏洞利用和安全报告生成等完整渗透测试流程，支持 CI/CD 集成。</div>
+  <div class="card-meta">
+    <div class="meta-item"><span class="lang-dot lang-python"></span> Python 91.9%</div>
+    <div class="meta-item">★ 38,773</div>
+    <div class="meta-item">Apache-2.0</div>
+  </div>
+  <div class="new-stars">
+    <span>SH-Weekly: +215</span>
+    <span>GH-Daily: +1,691/日</span>
+    <span>GH-Weekly: +10,741/周</span>
+  </div>
+  <div class="feature-tags">
+    <span class="feature-tag">AI 渗透测试</span>
+    <span class="feature-tag">多智能体编排</span>
+    <span class="feature-tag">CI/CD 集成</span>
+    <span class="feature-tag">自动化漏洞利用</span>
+    <span class="feature-tag">安全报告生成</span>
+  </div>
+</div>
+
+<!-- 2. system_prompts_leaks -->
+<div class="project-card">
+  <div class="card-header">
+    <div class="card-title"><a href="https://github.com/asgeirtj/system_prompts_leaks">asgeirtj/system_prompts_leaks</a></div>
+    <div class="card-tags">
+      <span class="tag tag-sh">SH-Weekly</span>
+      <span class="tag tag-gh-daily">GH-Daily</span>
+    </div>
+  </div>
+  <div class="card-desc">收集了主流 AI 产品（Claude、GPT、Gemini、Copilot 等）的系统提示词泄露合集，为 AI 安全研究和提示词工程提供了一手参考资料。</div>
+  <div class="card-meta">
+    <div class="meta-item"><span class="lang-dot lang-javascript"></span> JavaScript 71.5%</div>
+    <div class="meta-item">★ 53,416</div>
+    <div class="meta-item">CC0-1.0</div>
+  </div>
+  <div class="new-stars">
+    <span>SH-Weekly: +158</span>
+    <span>GH-Daily: +1,691/日</span>
+  </div>
+  <div class="feature-tags">
+    <span class="feature-tag">系统提示词</span>
+    <span class="feature-tag">AI 安全研究</span>
+    <span class="feature-tag">提示词泄露</span>
+    <span class="feature-tag">多模型对比</span>
+  </div>
+</div>
+
+<!-- 3. page-agent -->
+<div class="project-card">
+  <div class="card-header">
+    <div class="card-title"><a href="https://github.com/alibaba/page-agent">alibaba/page-agent</a></div>
+    <div class="card-tags">
+      <span class="tag tag-sh">SH-Weekly</span>
+      <span class="tag tag-gh-daily">GH-Daily</span>
+    </div>
+  </div>
+  <div class="card-desc">阿里巴巴开源的网页端 AI Agent 框架，可在浏览器中自主执行复杂任务，支持 DOM 操作、表单填写、数据提取等网页自动化场景。</div>
+  <div class="card-meta">
+    <div class="meta-item"><span class="lang-dot lang-typescript"></span> TypeScript</div>
+    <div class="meta-item">★ 25,042</div>
+    <div class="meta-item">Apache-2.0</div>
+  </div>
+  <div class="new-stars">
+    <span>SH-Weekly: +172</span>
+    <span>GH-Daily: +1,317/日</span>
+    <span>GH-Weekly: +4,163/周</span>
+  </div>
+  <div class="feature-tags">
+    <span class="feature-tag">网页自动化</span>
+    <span class="feature-tag">浏览器 Agent</span>
+    <span class="feature-tag">DOM 操作</span>
+    <span class="feature-tag">任务规划</span>
+    <span class="feature-tag">阿里巴巴</span>
+  </div>
+</div>
+
+<!-- 4. codex-plugin-cc -->
+<div class="project-card">
+  <div class="card-header">
+    <div class="card-title"><a href="https://github.com/openai/codex-plugin-cc">openai/codex-plugin-cc</a></div>
+    <div class="card-tags">
+      <span class="tag tag-sh">SH-Weekly</span>
+      <span class="tag tag-gh-daily">GH-Daily</span>
+    </div>
+  </div>
+  <div class="card-desc">OpenAI 官方发布的 Codex 插件生态核心组件，为 AI 编程助手提供可组合的技能插件系统，支持 Claude Code、Cursor、Copilot CLI 等多种编程 Agent。</div>
+  <div class="card-meta">
+    <div class="meta-item"><span class="lang-dot lang-javascript"></span> JavaScript</div>
+    <div class="meta-item">★ 26,722</div>
+    <div class="meta-item">MIT</div>
+  </div>
+  <div class="new-stars">
+    <span>SH-Weekly: +133</span>
+    <span>GH-Daily: +1,129/日</span>
+    <span>GH-Weekly: +4,725/周</span>
+  </div>
+  <div class="feature-tags">
+    <span class="feature-tag">Codex 插件</span>
+    <span class="feature-tag">可组合技能</span>
+    <span class="feature-tag">多 Agent 兼容</span>
+    <span class="feature-tag">OpenAI 官方</span>
+  </div>
+</div>
+
+<!-- 5. OmniRoute -->
+<div class="project-card">
+  <div class="card-header">
+    <div class="card-title"><a href="https://github.com/diegosouzapw/OmniRoute">diegosouzapw/OmniRoute</a></div>
+    <div class="card-tags">
+      <span class="tag tag-sh">SH-Weekly</span>
+      <span class="tag tag-gh-daily">GH-Daily</span>
+    </div>
+  </div>
+  <div class="card-desc">统一 API 路由与编排框架，可将多个 AI 模型 API 统一接入单一端点，支持负载均衡、故障切换和请求转换，简化多模型集成开发。</div>
+  <div class="card-meta">
+    <div class="meta-item"><span class="lang-dot lang-typescript"></span> TypeScript</div>
+    <div class="meta-item">★ 13,321</div>
+    <div class="meta-item">MIT</div>
+  </div>
+  <div class="new-stars">
+    <span>SH-Weekly: +121</span>
+    <span>GH-Daily: +664/日</span>
+    <span>GH-Weekly: +4,797/周</span>
+  </div>
+  <div class="feature-tags">
+    <span class="feature-tag">API 路由</span>
+    <span class="feature-tag">多模型编排</span>
+    <span class="feature-tag">负载均衡</span>
+    <span class="feature-tag">故障切换</span>
+    <span class="feature-tag">请求转换</span>
+  </div>
+</div>
+
+<!-- 6. CubeSandbox -->
+<div class="project-card">
+  <div class="card-header">
+    <div class="card-title"><a href="https://github.com/TencentCloud/CubeSandbox">TencentCloud/CubeSandbox</a></div>
+    <div class="card-tags">
+      <span class="tag tag-sh">SH-Weekly</span>
+      <span class="tag tag-gh-daily">GH-Daily</span>
+    </div>
+  </div>
+  <div class="card-desc">腾讯云开源的 AI Agent 安全沙箱环境，基于 RustVMM + KVM 虚拟化技术，实现低于 60ms 冷启动和不到 5MB 内存占用，兼容 E2B 协议。</div>
+  <div class="card-meta">
+    <div class="meta-item"><span class="lang-dot lang-rust"></span> Rust</div>
+    <div class="meta-item">★ 8,638</div>
+    <div class="meta-item">Apache-2.0</div>
+  </div>
+  <div class="new-stars">
+    <span>SH-Weekly: +109</span>
+    <span>GH-Daily: +664/日</span>
+    <span>GH-Weekly: +1,692/周</span>
+  </div>
+  <div class="feature-tags">
+    <span class="feature-tag">安全沙箱</span>
+    <span class="feature-tag">RustVMM</span>
+    <span class="feature-tag">极速冷启动</span>
+    <span class="feature-tag">E2B 兼容</span>
+    <span class="feature-tag">腾讯云</span>
+  </div>
+</div>
+
+<!-- 7. meetily -->
+<div class="project-card">
+  <div class="card-header">
+    <div class="card-title"><a href="https://github.com/Zackriya-Solutions/meetily">Zackriya-Solutions/meetily</a></div>
+    <div class="card-tags">
+      <span class="tag tag-sh">SH-Weekly</span>
+      <span class="tag tag-gh-daily">GH-Daily</span>
+      <span class="tag tag-gh-weekly">GH-Weekly</span>
+    </div>
+  </div>
+  <div class="card-desc">隐私优先的 AI 会议助手，所有语音识别和处理均在本地完成，无需上传云端。基于 Tauri 构建桌面应用，支持会议记录、摘要生成和多语言转录。</div>
+  <div class="card-meta">
+    <div class="meta-item"><span class="lang-dot lang-rust"></span> Rust 45.4% / TypeScript 29.7%</div>
+    <div class="meta-item">★ 21,170</div>
+    <div class="meta-item">MIT</div>
+  </div>
+  <div class="new-stars">
+    <span>SH-Weekly: +215</span>
+    <span>GH-Daily: +1,777/日</span>
+    <span>GH-Weekly: +7,349/周</span>
+  </div>
+  <div class="feature-tags">
+    <span class="feature-tag">本地 AI 处理</span>
+    <span class="feature-tag">会议记录</span>
+    <span class="feature-tag">隐私优先</span>
+    <span class="feature-tag">Tauri 桌面应用</span>
+    <span class="feature-tag">多语言转录</span>
+  </div>
+</div>
+
+<!-- 8. ai-job-search -->
+<div class="project-card">
+  <div class="card-header">
+    <div class="card-title"><a href="https://github.com/MadsLorentzen/ai-job-search">MadsLorentzen/ai-job-search</a></div>
+    <div class="card-tags">
+      <span class="tag tag-sh">SH-Weekly</span>
+      <span class="tag tag-gh-daily">GH-Daily</span>
+      <span class="tag tag-gh-weekly">GH-Weekly</span>
+    </div>
+  </div>
+  <div class="card-desc">基于 Claude Code 构建的 AI 求职自动化框架，可自动搜索职位、定制简历（LaTeX 生成）、撰写求职信并批量投递，大幅提升求职效率。</div>
+  <div class="card-meta">
+    <div class="meta-item"><span class="lang-dot lang-typescript"></span> TypeScript</div>
+    <div class="meta-item">★ 12,489</div>
+    <div class="meta-item">MIT</div>
+  </div>
+  <div class="new-stars">
+    <span>SH-Weekly: +238</span>
+    <span>GH-Daily: +2,514/日</span>
+    <span>GH-Weekly: +5,363/周</span>
+  </div>
+  <div class="feature-tags">
+    <span class="feature-tag">AI 求职</span>
+    <span class="feature-tag">简历自动生成</span>
+    <span class="feature-tag">LaTeX CV</span>
+    <span class="feature-tag">批量投递</span>
+    <span class="feature-tag">Claude Code</span>
+  </div>
+</div>
+
+<!-- 9. agency-agents -->
+<div class="project-card">
+  <div class="card-header">
+    <div class="card-title"><a href="https://github.com/msitarzewski/agency-agents">msitarzewski/agency-agents</a></div>
+    <div class="card-tags">
+      <span class="tag tag-sh">SH-Weekly</span>
+    </div>
+  </div>
+  <div class="card-desc">AI Agent 人格与角色集合，涵盖 16+ 个不同领域的 Agent 角色定义，支持可组合的技能系统，让编程 Agent 具备特定领域的专业能力和工作风格。</div>
+  <div class="card-meta">
+    <div class="meta-item"><span class="lang-dot lang-markdown"></span> Markdown / Shell</div>
+    <div class="meta-item">★ —</div>
+    <div class="meta-item">MIT</div>
+  </div>
+  <div class="new-stars">
+    <span>SH-Weekly: +238</span>
+  </div>
+  <div class="feature-tags">
+    <span class="feature-tag">Agent 人格</span>
+    <span class="feature-tag">角色定义</span>
+    <span class="feature-tag">可组合技能</span>
+    <span class="feature-tag">多领域覆盖</span>
+  </div>
+</div>
+
+<!-- 10. ponytail -->
+<div class="project-card">
+  <div class="card-header">
+    <div class="card-title"><a href="https://github.com/dietrichgebert/ponytail">dietrichgebert/ponytail</a></div>
+    <div class="card-tags">
+      <span class="tag tag-sh">SH-Weekly</span>
+    </div>
+  </div>
+  <div class="card-desc">AI 编程 Agent 技能插件，通过极致精简的代码输出（减少约 54% 代码量）来降低 token 消耗，支持 Claude Code、Cursor、Copilot 等 10+ 种主流 Agent。</div>
+  <div class="card-meta">
+    <div class="meta-item"><span class="lang-dot lang-shell"></span> Shell</div>
+    <div class="meta-item">★ —</div>
+    <div class="meta-item">MIT</div>
+  </div>
+  <div class="new-stars">
+    <span>SH-Weekly: +191</span>
+  </div>
+  <div class="feature-tags">
+    <span class="feature-tag">代码精简</span>
+    <span class="feature-tag">Token 优化</span>
+    <span class="feature-tag">多 Agent 支持</span>
+    <span class="feature-tag">编程技能</span>
+  </div>
+</div>
+
+<!-- 11. skills (mattpocock) -->
+<div class="project-card">
+  <div class="card-header">
+    <div class="card-title"><a href="https://github.com/mattpocock/skills">mattpocock/skills</a></div>
+    <div class="card-tags">
+      <span class="tag tag-sh">SH-Weekly</span>
+    </div>
+  </div>
+  <div class="card-desc">由 TypeScript 社区知名开发者 Matt Pocock 打造的生产级工程技能集，面向 AI 编程 Agent，强调 TDD 工作流和可组合的技能架构。</div>
+  <div class="card-meta">
+    <div class="meta-item"><span class="lang-dot lang-shell"></span> Shell 100%</div>
+    <div class="meta-item">★ —</div>
+    <div class="meta-item">MIT</div>
+  </div>
+  <div class="new-stars">
+    <span>SH-Weekly: +172</span>
+  </div>
+  <div class="feature-tags">
+    <span class="feature-tag">生产级技能</span>
+    <span class="feature-tag">TDD 工作流</span>
+    <span class="feature-tag">可组合架构</span>
+    <span class="feature-tag">工程最佳实践</span>
+  </div>
+</div>
+
+<!-- 12. agent-reach -->
+<div class="project-card">
+  <div class="card-header">
+    <div class="card-title"><a href="https://github.com/pannianntong/agent-reach">pannianntong/agent-reach</a></div>
+    <div class="card-tags">
+      <span class="tag tag-sh">SH-Weekly</span>
+    </div>
+  </div>
+  <div class="card-desc">AI Agent 互联网能力路由器，支持 15 个平台（小红书、Twitter、B站、Reddit 等），多后端架构实现零配置接入 6 个渠道，让 Agent 具备全网调研能力。</div>
+  <div class="card-meta">
+    <div class="meta-item"><span class="lang-dot lang-python"></span> Python</div>
+    <div class="meta-item">★ —</div>
+    <div class="meta-item">MIT</div>
+  </div>
+  <div class="new-stars">
+    <span>SH-Weekly: +133</span>
+  </div>
+  <div class="feature-tags">
+    <span class="feature-tag">15 平台路由</span>
+    <span class="feature-tag">多后端架构</span>
+    <span class="feature-tag">社交媒体</span>
+    <span class="feature-tag">网页搜索</span>
+    <span class="feature-tag">零配置</span>
+  </div>
+</div>
+
+<!-- 13. superpowers -->
+<div class="project-card">
+  <div class="card-header">
+    <div class="card-title"><a href="https://github.com/obra/superpowers">obra/superpowers</a></div>
+    <div class="card-tags">
+      <span class="tag tag-sh">SH-Weekly</span>
+    </div>
+  </div>
+  <div class="card-desc">完整的软件开发方法论技能包，为编程 Agent 提供从需求分析到部署的全流程指导，采用子 Agent 驱动的开发模式，强调代码质量和架构设计。</div>
+  <div class="card-meta">
+    <div class="meta-item"><span class="lang-dot lang-shell"></span> Shell 50.9% / JavaScript 41.9%</div>
+    <div class="meta-item">★ —</div>
+    <div class="meta-item">MIT</div>
+  </div>
+  <div class="new-stars">
+    <span>SH-Weekly: +121</span>
+  </div>
+  <div class="feature-tags">
+    <span class="feature-tag">开发方法论</span>
+    <span class="feature-tag">子 Agent 驱动</span>
+    <span class="feature-tag">全流程覆盖</span>
+    <span class="feature-tag">架构设计</span>
+  </div>
+</div>
+
+<!-- 14. taste-skill -->
+<div class="project-card">
+  <div class="card-header">
+    <div class="card-title"><a href="https://github.com/leonxlnx/taste-skill">leonxlnx/taste-skill</a></div>
+    <div class="card-tags">
+      <span class="tag tag-sh">SH-Weekly</span>
+    </div>
+  </div>
+  <div class="card-desc">反 AI 俗套的前端设计技能框架，为 AI Agent 提供可调节的"设计品味旋钮"，帮助生成具有高级感、差异化的 UI 界面，避免千篇一律的 AI 风格。</div>
+  <div class="card-meta">
+    <div class="meta-item"><span class="lang-dot lang-shell"></span> Shell 100%</div>
+    <div class="meta-item">★ —</div>
+    <div class="meta-item">MIT</div>
+  </div>
+  <div class="new-stars">
+    <span>SH-Weekly: +116</span>
+  </div>
+  <div class="feature-tags">
+    <span class="feature-tag">反 AI 俗套</span>
+    <span class="feature-tag">前端设计</span>
+    <span class="feature-tag">可调参数</span>
+    <span class="feature-tag">高级感 UI</span>
+  </div>
+</div>
+
+<!-- 15. hermes-agent -->
+<div class="project-card">
+  <div class="card-header">
+    <div class="card-title"><a href="https://github.com/nousresearch/hermes-agent">nousresearch/hermes-agent</a></div>
+    <div class="card-tags">
+      <span class="tag tag-sh">SH-Weekly</span>
+    </div>
+  </div>
+  <div class="card-desc">NousResearch 出品的自我进化 AI Agent，具备学习循环机制，可从交互中持续改进。支持多平台消息接入和定时任务调度，实现真正的自主运行。</div>
+  <div class="card-meta">
+    <div class="meta-item"><span class="lang-dot lang-python"></span> Python</div>
+    <div class="meta-item">★ —</div>
+    <div class="meta-item">MIT</div>
+  </div>
+  <div class="new-stars">
+    <span>SH-Weekly: +115</span>
+  </div>
+  <div class="feature-tags">
+    <span class="feature-tag">自我进化</span>
+    <span class="feature-tag">学习循环</span>
+    <span class="feature-tag">多平台消息</span>
+    <span class="feature-tag">定时调度</span>
+    <span class="feature-tag">自主运行</span>
+  </div>
+</div>
+
+<!-- 16. firecrawl -->
+<div class="project-card">
+  <div class="card-header">
+    <div class="card-title"><a href="https://github.com/firecrawl/firecrawl">firecrawl/firecrawl</a></div>
+    <div class="card-tags">
+      <span class="tag tag-sh">SH-Weekly</span>
+    </div>
+  </div>
+  <div class="card-desc">面向 LLM 的网页爬取和抓取 API 服务，可将网页内容转换为结构化的 LLM 可用格式，支持深度爬取、站点地图和 Agent 就绪的数据输出。</div>
+  <div class="card-meta">
+    <div class="meta-item"><span class="lang-dot lang-typescript"></span> TypeScript</div>
+    <div class="meta-item">★ —</div>
+    <div class="meta-item">AGPL-3.0</div>
+  </div>
+  <div class="new-stars">
+    <span>SH-Weekly: +109</span>
+  </div>
+  <div class="feature-tags">
+    <span class="feature-tag">网页爬取</span>
+    <span class="feature-tag">LLM 就绪</span>
+    <span class="feature-tag">结构化输出</span>
+    <span class="feature-tag">Agent 集成</span>
+    <span class="feature-tag">深度爬取</span>
+  </div>
+</div>
+
+<!-- 17. agent-skills (addyosmani) -->
+<div class="project-card">
+  <div class="card-header">
+    <div class="card-title"><a href="https://github.com/addyosmani/agent-skills">addyosmani/agent-skills</a></div>
+    <div class="card-tags">
+      <span class="tag tag-gh-daily">GH-Daily</span>
+    </div>
+  </div>
+  <div class="card-desc">Google 工程师 Addy Osmani 维护的 23 个生产级工程技能集，覆盖完整开发生命周期，包含 7 个斜杠命令，为 AI 编程 Agent 提供最佳实践指导。</div>
+  <div class="card-meta">
+    <div class="meta-item"><span class="lang-dot lang-javascript"></span> JavaScript</div>
+    <div class="meta-item">★ 72,561</div>
+    <div class="meta-item">MIT</div>
+  </div>
+  <div class="new-stars">
+    <span>GH-Daily: +1,317/日</span>
+  </div>
+  <div class="feature-tags">
+    <span class="feature-tag">23 工程技能</span>
+    <span class="feature-tag">7 斜杠命令</span>
+    <span class="feature-tag">全生命周期</span>
+    <span class="feature-tag">最佳实践</span>
+  </div>
+</div>
+
+<!-- 18. RuView -->
+<div class="project-card">
+  <div class="card-header">
+    <div class="card-title"><a href="https://github.com/ruvnet/RuView">ruvnet/RuView</a></div>
+    <div class="card-tags">
+      <span class="tag tag-gh-daily">GH-Daily</span>
+    </div>
+  </div>
+  <div class="card-desc">基于 WiFi 信号的空间智能感知平台，利用 ESP32 硬件实现穿墙感知能力，可应用于智能家居、安防监控和存在检测等场景，无需摄像头即可感知空间状态。</div>
+  <div class="card-meta">
+    <div class="meta-item"><span class="lang-dot lang-rust"></span> Rust / Python</div>
+    <div class="meta-item">★ 78,731</div>
+    <div class="meta-item">MIT</div>
+  </div>
+  <div class="new-stars">
+    <span>GH-Daily: +1,129/日</span>
+  </div>
+  <div class="feature-tags">
+    <span class="feature-tag">WiFi 感知</span>
+    <span class="feature-tag">空间智能</span>
+    <span class="feature-tag">ESP32</span>
+    <span class="feature-tag">智能家居</span>
+    <span class="feature-tag">穿墙检测</span>
+  </div>
+</div>
+
+<!-- 19. Website-downloader -->
+<div class="project-card">
+  <div class="card-header">
+    <div class="card-title"><a href="https://github.com/AhmadIbrahiim/Website-downloader">AhmadIbrahiim/Website-downloader</a></div>
+    <div class="card-tags">
+      <span class="tag tag-gh-daily">GH-Daily</span>
+    </div>
+  </div>
+  <div class="card-desc">完整的网站源代码下载工具，基于 wget 实现递归下载整个网站的前端资源、样式表和脚本，适用于网站备份、离线浏览和学习参考。</div>
+  <div class="card-meta">
+    <div class="meta-item"><span class="lang-dot lang-html"></span> HTML 91.2%</div>
+    <div class="meta-item">★ 4,298</div>
+    <div class="meta-item">MIT</div>
+  </div>
+  <div class="new-stars">
+    <span>GH-Daily: +140/日</span>
+  </div>
+  <div class="feature-tags">
+    <span class="feature-tag">网站下载</span>
+    <span class="feature-tag">递归爬取</span>
+    <span class="feature-tag">离线备份</span>
+    <span class="feature-tag">前端资源</span>
+  </div>
+</div>
+
+<!-- 20. CodexBar -->
+<div class="project-card">
+  <div class="card-header">
+    <div class="card-title"><a href="https://github.com/steipete/CodexBar">steipete/CodexBar</a></div>
+    <div class="card-tags">
+      <span class="tag tag-sh">SH-Weekly</span>
+    </div>
+  </div>
+  <div class="card-desc">macOS 菜单栏应用，集中显示所有 AI 编程服务的配额和用量信息，支持 Codex、Claude、Cursor、Gemini、Copilot 等 40+ 种 AI 提供商，帮助开发者合理规划用量。</div>
+  <div class="card-meta">
+    <div class="meta-item"><span class="lang-dot lang-swift"></span> Swift</div>
+    <div class="meta-item">★ 17,138</div>
+    <div class="meta-item">MIT</div>
+  </div>
+  <div class="new-stars">
+    <span>SH-Weekly: +158</span>
+    <span>GH-Daily: +376/日</span>
+  </div>
+  <div class="feature-tags">
+    <span class="feature-tag">用量监控</span>
+    <span class="feature-tag">40+ 提供商</span>
+    <span class="feature-tag">macOS 菜单栏</span>
+    <span class="feature-tag">重置倒计时</span>
+    <span class="feature-tag">隐私优先</span>
+  </div>
+</div>
+
+<!-- 21. dotnet/skills -->
+<div class="project-card">
+  <div class="card-header">
+    <div class="card-title"><a href="https://github.com/dotnet/skills">dotnet/skills</a></div>
+    <div class="card-tags">
+      <span class="tag tag-gh-daily">GH-Daily</span>
+    </div>
+  </div>
+  <div class="card-desc">.NET 团队官方维护的 AI 编程 Agent 技能集，包含 15 个插件覆盖 C# 开发全流程（ASP.NET、Blazor、MAUI、测试、EF 等），支持 Copilot CLI、Claude Code、Cursor 等多平台。</div>
+  <div class="card-meta">
+    <div class="meta-item"><span class="lang-dot lang-csharp"></span> C# 96.2%</div>
+    <div class="meta-item">★ 4,379</div>
+    <div class="meta-item">MIT</div>
+  </div>
+  <div class="new-stars">
+    <span>GH-Daily: +64/日</span>
+  </div>
+  <div class="feature-tags">
+    <span class="feature-tag">.NET 官方</span>
+    <span class="feature-tag">15 插件</span>
+    <span class="feature-tag">C# 全覆盖</span>
+    <span class="feature-tag">多 Agent 兼容</span>
+    <span class="feature-tag">插件市场</span>
+  </div>
+</div>
+
+<!-- 22. OfficeCLI -->
+<div class="project-card">
+  <div class="card-header">
+    <div class="card-title"><a href="https://github.com/iOfficeAI/OfficeCLI">iOfficeAI/OfficeCLI</a></div>
+    <div class="card-tags">
+      <span class="tag tag-gh-daily">GH-Daily</span>
+    </div>
+  </div>
+  <div class="card-desc">全球首个专为 AI Agent 设计的 Office 套件 CLI 工具，单二进制文件即可创建、读取和修改 Word/Excel/PowerPoint 文档，无需安装 Office，内置 HTML 渲染引擎实现文档可视化。</div>
+  <div class="card-meta">
+    <div class="meta-item"><span class="lang-dot lang-csharp"></span> C#</div>
+    <div class="meta-item">★ 10,647</div>
+    <div class="meta-item">Apache-2.0</div>
+  </div>
+  <div class="new-stars">
+    <span>GH-Daily: +893/日</span>
+  </div>
+  <div class="feature-tags">
+    <span class="feature-tag">Office CLI</span>
+    <span class="feature-tag">Word/Excel/PPT</span>
+    <span class="feature-tag">单二进制</span>
+    <span class="feature-tag">HTML 渲染</span>
+    <span class="feature-tag">AI Agent 原生</span>
+  </div>
+</div>
+
+<!-- 23. exercises-dataset -->
+<div class="project-card">
+  <div class="card-header">
+    <div class="card-title"><a href="https://github.com/hasaneyldrm/exercises-dataset">hasaneyldrm/exercises-dataset</a></div>
+    <div class="card-tags">
+      <span class="tag tag-gh-weekly">GH-Weekly</span>
+    </div>
+  </div>
+  <div class="card-desc">包含 1,324 个健身运动项目的结构化数据集，覆盖分类、部位、器材、目标肌群等维度，提供 6 种语言的动作说明，附带交互式浏览器和开发者接入向导。</div>
+  <div class="card-meta">
+    <div class="meta-item"><span class="lang-dot lang-html"></span> HTML</div>
+    <div class="meta-item">★ 10,887</div>
+    <div class="meta-item">MIT</div>
+  </div>
+  <div class="new-stars">
+    <span>GH-Weekly: +4,950/周</span>
+  </div>
+  <div class="feature-tags">
+    <span class="feature-tag">1324 运动项目</span>
+    <span class="feature-tag">6 语言说明</span>
+    <span class="feature-tag">交互式浏览器</span>
+    <span class="feature-tag">开发者向导</span>
+    <span class="feature-tag">健身数据</span>
+  </div>
+</div>
+
+<!-- 24. herdr -->
+<div class="project-card">
+  <div class="card-header">
+    <div class="card-title"><a href="https://github.com/ogulcancelik/herdr">ogulcancelik/herdr</a></div>
+    <div class="card-tags">
+      <span class="tag tag-gh-weekly">GH-Weekly</span>
+    </div>
+  </div>
+  <div class="card-desc">为 AI 编程 Agent 打造的终端多路复用器，类似 tmux 但专为 Agent 场景设计。每个 Agent 独立终端视图，侧边栏实时显示 Agent 状态（阻塞/工作中/完成），支持 SSH 远程和断线重连。</div>
+  <div class="card-meta">
+    <div class="meta-item"><span class="lang-dot lang-rust"></span> Rust 90.2%</div>
+    <div class="meta-item">★ 13,827</div>
+    <div class="meta-item">AGPL-3.0</div>
+  </div>
+  <div class="new-stars">
+    <span>GH-Weekly: +4,557/周</span>
+  </div>
+  <div class="feature-tags">
+    <span class="feature-tag">Agent 终端</span>
+    <span class="feature-tag">状态感知</span>
+    <span class="feature-tag">SSH 远程</span>
+    <span class="feature-tag">断线重连</span>
+    <span class="feature-tag">Socket API</span>
+  </div>
+</div>
+
+<!-- 25. FluidVoice -->
+<div class="project-card">
+  <div class="card-header">
+    <div class="card-title"><a href="https://github.com/altic-dev/FluidVoice">altic-dev/FluidVoice</a></div>
+    <div class="card-tags">
+      <span class="tag tag-gh-weekly">GH-Weekly</span>
+    </div>
+  </div>
+  <div class="card-desc">macOS 开源语音转文字听写应用，支持 NVIDIA Nemotron Speech 3.5 等 8 种语音引擎，全部在设备端运行。支持命令模式和写作模式，可通过语音控制 Mac 或在任意应用中输入文字。</div>
+  <div class="card-meta">
+    <div class="meta-item"><span class="lang-dot lang-swift"></span> Swift 99.6%</div>
+    <div class="meta-item">★ 6,772</div>
+    <div class="meta-item">GPL-3.0</div>
+  </div>
+  <div class="new-stars">
+    <span>GH-Weekly: +1,865/周</span>
+  </div>
+  <div class="feature-tags">
+    <span class="feature-tag">语音转文字</span>
+    <span class="feature-tag">Nemotron 3.5</span>
+    <span class="feature-tag">本地运行</span>
+    <span class="feature-tag">命令模式</span>
+    <span class="feature-tag">macOS 原生</span>
+  </div>
+</div>
+
+</div>
+
+<!-- ========== 编程语言分布 ========== -->
+<h2 class="section-title">编程语言分布统计</h2>
+
+<div class="table-wrapper">
+<table>
+  <thead>
+    <tr><th>语言</th><th>项目数</th><th>占比</th><th>项目列表</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><span class="lang-dot lang-shell"></span> Shell</td>
+      <td>8</td>
+      <td>36.4%</td>
+      <td>ponytail, skills, caveman, superpowers, taste-skill, agency-agents, CodexBar, FluidVoice</td>
+    </tr>
+    <tr>
+      <td><span class="lang-dot lang-typescript"></span> TypeScript</td>
+      <td>6</td>
+      <td>27.3%</td>
+      <td>ai-job-search, page-agent, OmniRoute, firecrawl, meetily, agent-skills</td>
+    </tr>
+    <tr>
+      <td><span class="lang-dot lang-python"></span> Python</td>
+      <td>4</td>
+      <td>18.2%</td>
+      <td>strix, agent-reach, hermes-agent, RuView</td>
+    </tr>
+    <tr>
+      <td><span class="lang-dot lang-javascript"></span> JavaScript</td>
+      <td>4</td>
+      <td>18.2%</td>
+      <td>system_prompts_leaks, codex-plugin-cc, caveman, agent-skills</td>
+    </tr>
+    <tr>
+      <td><span class="lang-dot lang-rust"></span> Rust</td>
+      <td>3</td>
+      <td>13.6%</td>
+      <td>meetily, CubeSandbox, herdr</td>
+    </tr>
+    <tr>
+      <td><span class="lang-dot lang-swift"></span> Swift</td>
+      <td>2</td>
+      <td>9.1%</td>
+      <td>CodexBar, FluidVoice</td>
+    </tr>
+    <tr>
+      <td><span class="lang-dot lang-csharp"></span> C#</td>
+      <td>2</td>
+      <td>9.1%</td>
+      <td>dotnet/skills, OfficeCLI</td>
+    </tr>
+    <tr>
+      <td><span class="lang-dot lang-html"></span> HTML</td>
+      <td>2</td>
+      <td>9.1%</td>
+      <td>Website-downloader, exercises-dataset</td>
+    </tr>
+    <tr>
+      <td><span class="lang-dot lang-markdown"></span> Markdown</td>
+      <td>1</td>
+      <td>4.5%</td>
+      <td>agency-agents</td>
+    </tr>
+    <tr>
+      <td><span class="lang-dot lang-css"></span> CSS</td>
+      <td>1</td>
+      <td>4.5%</td>
+      <td>herdr</td>
+    </tr>
+    <tr>
+      <td><span class="lang-dot lang-powershell"></span> PowerShell</td>
+      <td>1</td>
+      <td>4.5%</td>
+      <td>dotnet/skills</td>
+    </tr>
+    <tr>
+      <td><span class="lang-dot lang-mdx"></span> MDX</td>
+      <td>1</td>
+      <td>4.5%</td>
+      <td>herdr</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<!-- ========== 功能领域分类 ========== -->
+<h2 class="section-title">功能领域分类统计</h2>
+
+<div class="table-wrapper">
+<table>
+  <thead>
+    <tr><th>领域</th><th>项目数</th><th>代表项目</th><th>领域说明</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong style="color:#f0883e;">AI Agent 技能/框架</strong></td>
+      <td>10</td>
+      <td>agency-agents, skills, agent-skills, superpowers, ponytail, caveman, taste-skill, codex-plugin-cc, dotnet/skills, agent-reach</td>
+      <td>为 AI 编程 Agent 提供可组合技能、人格定义、工程方法论和互联网能力</td>
+    </tr>
+    <tr>
+      <td><strong style="color:#58a6ff;">AI 开发工具</strong></td>
+      <td>5</td>
+      <td>CodexBar, herdr, OfficeCLI, OmniRoute, CubeSandbox</td>
+      <td>AI 编程辅助工具链，包括用量监控、终端管理、文档生成、API 路由和安全沙箱</td>
+    </tr>
+    <tr>
+      <td><strong style="color:#3fb950;">AI 应用/自动化</strong></td>
+      <td>4</td>
+      <td>ai-job-search, page-agent, hermes-agent, meetily</td>
+      <td>基于 AI 的垂直应用，涵盖求职自动化、网页 Agent、自进化 Agent 和会议助手</td>
+    </tr>
+    <tr>
+      <td><strong style="color:#bc8cff;">安全/隐私</strong></td>
+      <td>2</td>
+      <td>strix, system_prompts_leaks</td>
+      <td>AI 安全研究工具，包括自动化渗透测试和系统提示词泄露分析</td>
+    </tr>
+    <tr>
+      <td><strong style="color:#f778ba;">数据/内容</strong></td>
+      <td>2</td>
+      <td>exercises-dataset, firecrawl</td>
+      <td>结构化数据集和网页内容抓取服务，为 AI 提供高质量数据输入</td>
+    </tr>
+    <tr>
+      <td><strong style="color:#79c0ff;">语音/硬件</strong></td>
+      <td>2</td>
+      <td>FluidVoice, RuView</td>
+      <td>本地语音转文字应用和 WiFi 空间感知硬件平台</td>
+    </tr>
+    <tr>
+      <td><strong style="color:#d2a8ff;">实用工具</strong></td>
+      <td>1</td>
+      <td>Website-downloader</td>
+      <td>网站源代码完整下载工具</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<!-- ========== 关键洞察 ========== -->
+<h2 class="section-title">关键趋势洞察</h2>
+
+<ul class="insights-list">
+  <li>
+    <span class="insight-num">1</span>
+    <strong>"可组合技能"成为 AI Agent 生态的主流范式。</strong> 22 个项目中有 10 个直接围绕 Agent Skills 展开，从 Matt Pocock、Addy Osmani 到 dotnet 官方和 OpenAI 自身，各大阵营都在构建可插拔的技能体系。这标志着 AI 编程助手正从"通用对话"向"专业化技能组合"演进。
+  </li>
+  <li>
+    <span class="insight-num">2</span>
+    <strong>AI Agent 基础设施正在快速成熟。</strong> 终端多路复用器 (herdr)、安全沙箱 (CubeSandbox)、用量监控 (CodexBar)、Office 文档 CLI (OfficeCLI) 等工具的出现，表明 Agent 生态已从"能力探索"进入"工程化基建"阶段，开发者开始关注 Agent 的运行环境、资源管理和生产力输出。
+  </li>
+  <li>
+    <span class="insight-num">3</span>
+    <strong>隐私与本地化成为差异化竞争力。</strong> meetily（本地会议处理）、FluidVoice（设备端语音识别）、RuView（本地 WiFi 感知）等项目强调"零云端依赖"，反映出用户对 AI 隐私安全的重视正在推动"本地优先"产品的增长。
+  </li>
+  <li>
+    <span class="insight-num">4</span>
+    <strong>Python 和 Shell 主导 Agent 技能开发，但 Rust 在基础设施层崛起。</strong> Shell 脚本是 Agent 技能定义的首选格式（8 个项目），Python 仍是 AI 核心逻辑的主力（4 个），而 Rust 凭借安全性和性能优势，正在 Agent 基础设施层（沙箱、终端、桌面应用）占据重要位置（3 个项目）。
+  </li>
+  <li>
+    <span class="insight-num">5</span>
+    <strong>跨榜项目高度集中于 AI Agent 赛道。</strong> 11 个跨榜项目全部与 AI Agent 直接相关，其中 strix（AI 渗透测试）和 meetily（AI 会议助手）同时登上全部三个榜单。这表明 AI Agent 不仅是当前最热的开发方向，也是社区关注度最高、增长最快的领域。
+  </li>
+</ul>
+
+<!-- ========== 底部 ========== -->
+<div class="footer">
+  <p>数据来源：Star-History Weekly (2026.06.30 - 07.06) &nbsp;|&nbsp; GitHub Trending Daily &nbsp;|&nbsp; GitHub Trending Weekly</p>
+  <p>采集时间：2026-07-08 &nbsp;|&nbsp; 报告自动生成</p>
+</div>
+
+</body>
+</html>
