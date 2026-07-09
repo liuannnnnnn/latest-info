@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>热门项目日报</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans SC', sans-serif;
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            color: #e0e0e0;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+        .container { max-width: 800px; margin: 0 auto; }
+        header {
+            text-align: center;
+            padding: 3rem 0;
+        }
+        header h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(90deg, #667eea, #764ba2, #f093fb);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+        header p {
+            color: #888;
+            font-size: 1.1rem;
+        }
+        .report-list {
+            list-style: none;
+            margin-top: 2rem;
+        }
+        .report-list li {
+            margin-bottom: 1rem;
+        }
+        .report-list a {
+            display: block;
+            padding: 1.2rem 1.5rem;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            color: #b8c6db;
+            text-decoration: none;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+        .report-list a:hover {
+            background: rgba(255,255,255,0.1);
+            border-color: #667eea;
+            transform: translateX(8px);
+            color: #fff;
+        }
+        .report-list .date {
+            display: inline-block;
+            background: rgba(102, 126, 234, 0.2);
+            color: #667eea;
+            padding: 0.2rem 0.6rem;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            margin-right: 0.8rem;
+        }
+        footer {
+            text-align: center;
+            margin-top: 4rem;
+            padding: 2rem 0;
+            color: #555;
+            font-size: 0.9rem;
+        }
+        footer a { color: #667eea; text-decoration: none; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>GitHub 热门项目日报</h1>
+            <p>每日追踪 GitHub 热门开源项目动态</p>
+        </header>
+        <ul class="report-list">
+            <li>
+                <a href="热门项目日报-20260709.html">
+                    <span class="date">2026-07-09</span> 热门项目日报
+                </a>
+            </li>
+            <li>
+                <a href="热门项目日报-20260708.html">
+                    <span class="date">2026-07-08</span> 热门项目日报
+                </a>
+            </li>
+        </ul>
+        <footer>
+            Powered by <a href="https://github.com/liuannnnnnn/latest-info" target="_blank">latest-info</a> &middot; GitHub Pages
+        </footer>
+    </div>
+</body>
+</html>
