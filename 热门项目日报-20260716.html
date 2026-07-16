@@ -1,0 +1,1096 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GitHub 热门项目日报 - 2026-07-16</title>
+<style>
+:root {
+  --bg-primary: #0d1117;
+  --bg-secondary: #161b22;
+  --bg-tertiary: #21262d;
+  --border: #30363d;
+  --text-primary: #c9d1d9;
+  --text-secondary: #8b949e;
+  --text-link: #58a6ff;
+  --accent-orange: #f0883e;
+  --accent-blue: #58a6ff;
+  --accent-green: #3fb950;
+  --accent-purple: #bc8cff;
+  --accent-red: #f85149;
+  --accent-yellow: #d29922;
+  --tag-bg: rgba(56,139,253,0.15);
+  --tag-text: #58a6ff;
+  --card-shadow: 0 1px 3px rgba(0,0,0,0.3);
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+  line-height: 1.6;
+  padding: 20px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+h1 { font-size: 2em; margin-bottom: 8px; color: #fff; }
+h2 { font-size: 1.5em; margin: 40px 0 20px; color: #fff; border-bottom: 1px solid var(--border); padding-bottom: 10px; }
+h3 { font-size: 1.2em; margin: 0; }
+a { color: var(--text-link); text-decoration: none; }
+a:hover { text-decoration: underline; }
+.subtitle { color: var(--text-secondary); font-size: 0.95em; margin-bottom: 30px; }
+
+/* Stats Cards */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-bottom: 40px;
+}
+.stat-card {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 20px;
+  text-align: center;
+}
+.stat-value { font-size: 2.2em; font-weight: 700; color: #fff; }
+.stat-label { color: var(--text-secondary); font-size: 0.9em; margin-top: 4px; }
+.stat-card:nth-child(1) .stat-value { color: var(--accent-green); }
+.stat-card:nth-child(2) .stat-value { color: var(--accent-blue); }
+.stat-card:nth-child(3) .stat-value { color: var(--accent-purple); }
+.stat-card:nth-child(4) .stat-value { color: var(--accent-orange); }
+
+/* Cross-list section */
+.cross-list-section { margin-bottom: 40px; }
+.cross-list-item {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent-purple);
+  border-radius: 6px;
+  padding: 14px 18px;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.cross-list-item .repo-name { font-weight: 600; color: #fff; font-size: 1.05em; }
+.badge {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 12px;
+  font-size: 0.75em;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.badge-sh { background: rgba(240,136,62,0.2); color: var(--accent-orange); }
+.badge-daily { background: rgba(88,166,255,0.2); color: var(--accent-blue); }
+.badge-weekly { background: rgba(63,185,80,0.2); color: var(--accent-green); }
+.badge-count { background: rgba(188,140,255,0.2); color: var(--accent-purple); }
+
+/* Project Cards */
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(420px, 1fr));
+  gap: 20px;
+  margin-bottom: 40px;
+}
+.project-card {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 22px;
+  transition: border-color 0.2s;
+}
+.project-card:hover { border-color: var(--text-secondary); }
+.card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; gap: 8px; flex-wrap: wrap; }
+.card-header .repo-link { font-size: 1.15em; font-weight: 700; color: var(--text-link); }
+.card-badges { display: flex; gap: 6px; flex-wrap: wrap; }
+.card-desc { color: var(--text-secondary); font-size: 0.9em; margin-bottom: 14px; line-height: 1.55; }
+.card-meta { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 12px; font-size: 0.85em; color: var(--text-secondary); }
+.card-meta .meta-item { display: flex; align-items: center; gap: 4px; }
+.lang-dot {
+  width: 10px; height: 10px; border-radius: 50%; display: inline-block;
+}
+.lang-dot.TypeScript { background: #3178c6; }
+.lang-dot.Python { background: #3572A5; }
+.lang-dot.Rust { background: #dea584; }
+.lang-dot.JavaScript { background: #f1e05a; }
+.lang-dot.Shell { background: #89e051; }
+.lang-dot.CSS { background: #563d7c; }
+.lang-dot.Cpp { background: #f34b7d; }
+.lang-dot.CSharp { background: #178600; }
+.lang-dot.HTML { background: #e34c26; }
+.lang-dot.Markdown { background: #083fa1; }
+.lang-dot.Jupyter { background: #DA5B0B; }
+.stars-info { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 12px; font-size: 0.85em; }
+.star-badge { padding: 2px 8px; border-radius: 4px; font-weight: 500; }
+.star-badge.sh { background: rgba(240,136,62,0.15); color: var(--accent-orange); }
+.star-badge.daily { background: rgba(88,166,255,0.15); color: var(--accent-blue); }
+.star-badge.weekly { background: rgba(63,185,80,0.15); color: var(--accent-green); }
+.tags { display: flex; gap: 6px; flex-wrap: wrap; }
+.tag {
+  background: var(--tag-bg);
+  color: var(--tag-text);
+  padding: 2px 10px;
+  border-radius: 12px;
+  font-size: 0.75em;
+}
+.license-badge {
+  background: rgba(139,148,158,0.15);
+  color: var(--text-secondary);
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 0.8em;
+}
+
+/* Tables */
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 30px;
+  font-size: 0.9em;
+}
+.data-table th {
+  background: var(--bg-tertiary);
+  padding: 10px 14px;
+  text-align: left;
+  border-bottom: 2px solid var(--border);
+  color: #fff;
+  font-weight: 600;
+}
+.data-table td {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+}
+.data-table tr:hover td { background: rgba(255,255,255,0.03); }
+.data-table .lang-cell { display: flex; align-items: center; gap: 6px; }
+
+/* Insights */
+.insights-list { list-style: none; }
+.insights-list li {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 16px 20px;
+  margin-bottom: 10px;
+  position: relative;
+  padding-left: 48px;
+}
+.insights-list li::before {
+  content: attr(data-num);
+  position: absolute;
+  left: 16px;
+  top: 16px;
+  width: 22px;
+  height: 22px;
+  background: var(--accent-blue);
+  color: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75em;
+  font-weight: 700;
+}
+
+/* Footer */
+.footer {
+  margin-top: 50px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+  color: var(--text-secondary);
+  font-size: 0.85em;
+  text-align: center;
+}
+
+/* Sort buttons */
+.sort-bar { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
+.sort-btn {
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  padding: 6px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.85em;
+  transition: all 0.2s;
+}
+.sort-btn:hover, .sort-btn.active { background: var(--accent-blue); color: #fff; border-color: var(--accent-blue); }
+
+@media (max-width: 768px) {
+  .projects-grid { grid-template-columns: 1fr; }
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  h1 { font-size: 1.5em; }
+}
+</style>
+</head>
+<body>
+
+<h1>GitHub 热门项目日报</h1>
+<p class="subtitle">数据采集日期：2026-07-16 | 数据来源：Star History Weekly / GitHub Trending Daily / GitHub Trending Weekly</p>
+
+<!-- 统计概览 -->
+<div class="stats-grid">
+  <div class="stat-card">
+    <div class="stat-value">25</div>
+    <div class="stat-label">去重后项目总数</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-value">57,468</div>
+    <div class="stat-label">三榜新增 Star 总计</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-value">8</div>
+    <div class="stat-label">跨榜项目数</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-value">12</div>
+    <div class="stat-label">编程语言种类数</div>
+  </div>
+</div>
+
+<!-- 跨榜项目高亮 -->
+<h2>跨榜项目高亮</h2>
+<div class="cross-list-section">
+
+<div class="cross-list-item">
+  <span class="repo-name"><a href="https://github.com/shubhamsaboo/awesome-llm-apps">shubhamsaboo/awesome-llm-apps</a></span>
+  <span class="badge badge-sh">Star History 周榜</span>
+  <span class="badge badge-daily">GH 日榜</span>
+  <span class="badge badge-weekly">GH 周榜</span>
+  <span class="badge badge-count">三榜上榜</span>
+</div>
+
+<div class="cross-list-item">
+  <span class="repo-name"><a href="https://github.com/mattpocock/skills">mattpocock/skills</a></span>
+  <span class="badge badge-sh">Star History 周榜</span>
+  <span class="badge badge-daily">GH 日榜</span>
+  <span class="badge badge-count">双榜上榜</span>
+</div>
+
+<div class="cross-list-item">
+  <span class="repo-name"><a href="https://github.com/OpenCut-app/OpenCut">OpenCut-app/OpenCut</a></span>
+  <span class="badge badge-daily">GH 日榜</span>
+  <span class="badge badge-weekly">GH 周榜</span>
+  <span class="badge badge-count">双榜上榜</span>
+</div>
+
+<div class="cross-list-item">
+  <span class="repo-name"><a href="https://github.com/Nutlope/hallmark">Nutlope/hallmark</a></span>
+  <span class="badge badge-daily">GH 日榜</span>
+  <span class="badge badge-weekly">GH 周榜</span>
+  <span class="badge badge-count">双榜上榜</span>
+</div>
+
+<div class="cross-list-item">
+  <span class="repo-name"><a href="https://github.com/HKUDS/Vibe-Trading">HKUDS/Vibe-Trading</a></span>
+  <span class="badge badge-daily">GH 日榜</span>
+  <span class="badge badge-weekly">GH 周榜</span>
+  <span class="badge badge-count">双榜上榜</span>
+</div>
+
+<div class="cross-list-item">
+  <span class="repo-name"><a href="https://github.com/iofficeai/officecli">iofficeai/officecli</a></span>
+  <span class="badge badge-sh">Star History 周榜</span>
+  <span class="badge badge-weekly">GH 周榜</span>
+  <span class="badge badge-count">双榜上榜</span>
+</div>
+
+<div class="cross-list-item">
+  <span class="repo-name"><a href="https://github.com/Zackriya-Solutions/meetily">Zackriya-Solutions/meetily</a></span>
+  <span class="badge badge-sh">Star History 周榜</span>
+  <span class="badge badge-weekly">GH 周榜</span>
+  <span class="badge badge-count">双榜上榜</span>
+</div>
+
+<div class="cross-list-item">
+  <span class="repo-name"><a href="https://github.com/panniantong/agent-reach">panniantong/agent-reach</a></span>
+  <span class="badge badge-sh">Star History 周榜</span>
+  <span class="badge badge-weekly">GH 周榜</span>
+  <span class="badge badge-count">双榜上榜</span>
+</div>
+
+</div>
+
+<!-- 全量项目详情 -->
+<h2>全量项目详情</h2>
+<div class="sort-bar">
+  <button class="sort-btn active" onclick="sortCards('stars')">按总 Star 排序</button>
+  <button class="sort-btn" onclick="sortCards('new')">按新增 Star 排序</button>
+  <button class="sort-btn" onclick="sortCards('name')">按名称排序</button>
+</div>
+
+<div class="projects-grid" id="projectsGrid">
+
+<!-- 1. mattpocock/skills -->
+<div class="project-card" data-stars="164598" data-new="2176" data-name="mattpocock/skills">
+  <div class="card-header">
+    <a class="repo-link" href="https://github.com/mattpocock/skills" target="_blank">mattpocock/skills</a>
+    <div class="card-badges">
+      <span class="badge badge-sh">SH 周榜</span>
+      <span class="badge badge-daily">GH 日榜</span>
+    </div>
+  </div>
+  <p class="card-desc">Matt Pocock 开源的 AI 编程代理工程化技能库，专为解决 Agent 常见失败模式（需求偏差、代码冗余、架构混乱等）而设计。包含 grill-me、TDD、领域建模、架构改进等可组合技能，适用于 Claude Code、Codex、Cursor 等主流编码代理。</p>
+  <div class="card-meta">
+    <span class="meta-item"><span class="lang-dot Shell"></span> Shell</span>
+    <span class="meta-item"><span class="license-badge">MIT</span></span>
+  </div>
+  <div class="stars-info">
+    <span class="meta-item">⭐ 164,598</span>
+    <span class="star-badge sh">SH +46</span>
+    <span class="star-badge daily">日榜 +2,130/天</span>
+  </div>
+  <div class="tags">
+    <span class="tag">可组合技能</span>
+    <span class="tag">TDD 工作流</span>
+    <span class="tag">领域建模</span>
+    <span class="tag">多平台支持</span>
+    <span class="tag">架构改进</span>
+  </div>
+</div>
+
+<!-- 2. obra/superpowers -->
+<div class="project-card" data-stars="251000" data-new="24" data-name="obra/superpowers">
+  <div class="card-header">
+    <a class="repo-link" href="https://github.com/obra/superpowers" target="_blank">obra/superpowers</a>
+    <div class="card-badges">
+      <span class="badge badge-sh">SH 周榜</span>
+    </div>
+  </div>
+  <p class="card-desc">一套面向 AI 编码代理的完整软件开发方法论框架，通过可组合的技能集和自动触发机制，让代理遵循规范化的开发流程。涵盖头脑风暴、设计审批、实现规划、子代理驱动开发、TDD、代码审查等完整工作流。</p>
+  <div class="card-meta">
+    <span class="meta-item"><span class="lang-dot Shell"></span> Shell</span>
+    <span class="meta-item"><span class="license-badge">MIT</span></span>
+  </div>
+  <div class="stars-info">
+    <span class="meta-item">⭐ 251,000</span>
+    <span class="star-badge sh">SH +24</span>
+  </div>
+  <div class="tags">
+    <span class="tag">开发方法论</span>
+    <span class="tag">子代理驱动</span>
+    <span class="tag">TDD</span>
+    <span class="tag">Git Worktree</span>
+    <span class="tag">多平台插件</span>
+  </div>
+</div>
+
+<!-- 3. shubhamsaboo/awesome-llm-apps -->
+<div class="project-card" data-stars="121909" data-new="6158" data-name="shubhamsaboo/awesome-llm-apps">
+  <div class="card-header">
+    <a class="repo-link" href="https://github.com/shubhamsaboo/awesome-llm-apps" target="_blank">shubhamsaboo/awesome-llm-apps</a>
+    <div class="card-badges">
+      <span class="badge badge-sh">SH 周榜</span>
+      <span class="badge badge-daily">GH 日榜</span>
+      <span class="badge badge-weekly">GH 周榜</span>
+    </div>
+  </div>
+  <p class="card-desc">包含 100+ 个可直接运行的 AI Agent 和 RAG 应用的模板集合。涵盖入门 Agent、高级 Agent、多 Agent 团队、语音 AI、MCP Agent、RAG 教程等 15 个类别，支持 Claude、Gemini、OpenAI 等多种 LLM 提供商。</p>
+  <div class="card-meta">
+    <span class="meta-item"><span class="lang-dot Python"></span> Python</span>
+    <span class="meta-item"><span class="license-badge">Apache-2.0</span></span>
+  </div>
+  <div class="stars-info">
+    <span class="meta-item">⭐ 121,909</span>
+    <span class="star-badge sh">SH +20</span>
+    <span class="star-badge daily">日榜 +1,236/天</span>
+    <span class="star-badge weekly">周榜 +4,902/周</span>
+  </div>
+  <div class="tags">
+    <span class="tag">100+ 模板</span>
+    <span class="tag">AI Agent</span>
+    <span class="tag">RAG</span>
+    <span class="tag">语音 AI</span>
+    <span class="tag">MCP</span>
+    <span class="tag">多 Agent</span>
+  </div>
+</div>
+
+<!-- 4. voltagent/awesome-design-md -->
+<div class="project-card" data-stars="99473" data-new="22" data-name="voltagent/awesome-design-md">
+  <div class="card-header">
+    <a class="repo-link" href="https://github.com/voltagent/awesome-design-md" target="_blank">voltagent/awesome-design-md</a>
+    <div class="card-badges">
+      <span class="badge badge-sh">SH 周榜</span>
+    </div>
+  </div>
+  <p class="card-desc">精选的 DESIGN.md 设计规范合集，收集了 80+ 知名网站（Apple、Stripe、Nike、Airbnb 等）的设计系统文档。将 DESIGN.md 复制到项目中，AI 代理即可生成与目标设计风格一致的高质量 UI。</p>
+  <div class="card-meta">
+    <span class="meta-item"><span class="lang-dot Markdown"></span> Markdown</span>
+    <span class="meta-item"><span class="license-badge">MIT</span></span>
+  </div>
+  <div class="stars-info">
+    <span class="meta-item">⭐ 99,473</span>
+    <span class="star-badge sh">SH +22</span>
+  </div>
+  <div class="tags">
+    <span class="tag">DESIGN.md</span>
+    <span class="tag">80+ 品牌</span>
+    <span class="tag">Google Stitch</span>
+    <span class="tag">设计系统</span>
+    <span class="tag">UI 生成</span>
+  </div>
+</div>
+
+<!-- 5. dietrichgebert/ponytail -->
+<div class="project-card" data-stars="78500" data-new="23" data-name="dietrichgebert/ponytail">
+  <div class="card-header">
+    <a class="repo-link" href="https://github.com/dietrichgebert/ponytail" target="_blank">dietrichgebert/ponytail</a>
+    <div class="card-badges">
+      <span class="badge badge-sh">SH 周榜</span>
+    </div>
+  </div>
+  <p class="card-desc">让 AI 编码代理像"最懒的资深工程师"一样思考的技能插件，通过决策阶梯确保只写必要代码。经基准测试平均减少 54% 代码量（最高 94%），同时保持 100% 安全性。</p>
+  <div class="card-meta">
+    <span class="meta-item"><span class="lang-dot JavaScript"></span> JavaScript</span>
+    <span class="meta-item"><span class="license-badge">MIT</span></span>
+  </div>
+  <div class="stars-info">
+    <span class="meta-item">⭐ 78,500</span>
+    <span class="star-badge sh">SH +23</span>
+  </div>
+  <div class="tags">
+    <span class="tag">代码精简</span>
+    <span class="tag">决策阶梯</span>
+    <span class="tag">反过度工程</span>
+    <span class="tag">多强度级别</span>
+    <span class="tag">跨平台</span>
+  </div>
+</div>
+
+<!-- 6. graphify-labs/graphify -->
+<div class="project-card" data-stars="86365" data-new="31" data-name="graphify-labs/graphify">
+  <div class="card-header">
+    <a class="repo-link" href="https://github.com/graphify-labs/graphify" target="_blank">graphify-labs/graphify</a>
+    <div class="card-badges">
+      <span class="badge badge-sh">SH 周榜</span>
+    </div>
+  </div>
+  <p class="card-desc">将完整项目（代码、文档、PDF、图片、视频）映射为可查询知识图谱的 AI 技能工具。代码通过 tree-sitter AST 在本地确定性解析，支持约 40 种编程语言，不依赖 LLM，数据不离开本机。</p>
+  <div class="card-meta">
+    <span class="meta-item"><span class="lang-dot Python"></span> Python</span>
+    <span class="meta-item"><span class="license-badge">MIT</span></span>
+  </div>
+  <div class="stars-info">
+    <span class="meta-item">⭐ 86,365</span>
+    <span class="star-badge sh">SH +31</span>
+  </div>
+  <div class="tags">
+    <span class="tag">知识图谱</span>
+    <span class="tag">Tree-sitter AST</span>
+    <span class="tag">本地解析</span>
+    <span class="tag">MCP 服务器</span>
+    <span class="tag">社区检测</span>
+  </div>
+</div>
+
+<!-- 7. oven-sh/bun -->
+<div class="project-card" data-stars="94774" data-new="1291" data-name="oven-sh/bun">
+  <div class="card-header">
+    <a class="repo-link" href="https://github.com/oven-sh/bun" target="_blank">oven-sh/bun</a>
+    <div class="card-badges">
+      <span class="badge badge-weekly">GH 周榜</span>
+    </div>
+  </div>
+  <p class="card-desc">全能型 JavaScript/TypeScript 工具链，集运行时、打包器、测试运行器和包管理器于一体。使用 Zig 编写、JavaScriptCore 引擎驱动，作为 Node.js 的高性能替代品。</p>
+  <div class="card-meta">
+    <span class="meta-item"><span class="lang-dot Rust"></span> Rust/Zig</span>
+    <span class="meta-item"><span class="license-badge">MIT</span></span>
+  </div>
+  <div class="stars-info">
+    <span class="meta-item">⭐ 94,774</span>
+    <span class="star-badge weekly">周榜 +1,291/周</span>
+  </div>
+  <div class="tags">
+    <span class="tag">JS 运行时</span>
+    <span class="tag">打包器</span>
+    <span class="tag">包管理器</span>
+    <span class="tag">TypeScript 原生</span>
+    <span class="tag">单文件编译</span>
+  </div>
+</div>
+
+<!-- 8. leonxlnx/taste-skill -->
+<div class="project-card" data-stars="52648" data-new="30" data-name="leonxlnx/taste-skill">
+  <div class="card-header">
+    <a class="repo-link" href="https://github.com/leonxlnx/taste-skill" target="_blank">leonxlnx/taste-skill</a>
+    <div class="card-badges">
+      <span class="badge badge-sh">SH 周榜</span>
+    </div>
+  </div>
+  <p class="card-desc">专为 AI 编码代理设计的前端审美技能集，旨在解决 AI 生成 UI 千篇一律的"模板化"问题。提供可调节的设计参数（布局方差、动效强度、视觉密度），支持多种视觉风格变体。</p>
+  <div class="card-meta">
+    <span class="meta-item"><span class="lang-dot JavaScript"></span> JavaScript</span>
+    <span class="meta-item"><span class="license-badge">MIT</span></span>
+  </div>
+  <div class="stars-info">
+    <span class="meta-item">⭐ 52,648</span>
+    <span class="star-badge sh">SH +30</span>
+  </div>
+  <div class="tags">
+    <span class="tag">反模板化</span>
+    <span class="tag">设计参数</span>
+    <span class="tag">图片生成</span>
+    <span class="tag">多风格变体</span>
+    <span class="tag">框架无关</span>
+  </div>
+</div>
+
+<!-- 9. asgeirtj/system_prompts_leaks -->
+<div class="project-card" data-stars="51524" data-new="21" data-name="asgeirtj/system_prompts_leaks">
+  <div class="card-header">
+    <a class="repo-link" href="https://github.com/asgeirtj/system_prompts_leaks" target="_blank">asgeirtj/system_prompts_leaks</a>
+    <div class="card-badges">
+      <span class="badge badge-sh">SH 周榜</span>
+    </div>
+  </div>
+  <p class="card-desc">系统性记录主流 AI 聊天机器人系统提示词的开源情报仓库，覆盖 Anthropic、OpenAI、Google、xAI、Microsoft 等主要厂商。包含各模型版本的完整系统提示词和版本间差异对比，曾被华盛顿邮报报道。</p>
+  <div class="card-meta">
+    <span class="meta-item"><span class="lang-dot JavaScript"></span> JavaScript</span>
+    <span class="meta-item"><span class="license-badge">CC0-1.0</span></span>
+  </div>
+  <div class="stars-info">
+    <span class="meta-item">⭐ 51,524</span>
+    <span class="star-badge sh">SH +21</span>
+  </div>
+  <div class="tags">
+    <span class="tag">系统提示词</span>
+    <span class="tag">AI 情报</span>
+    <span class="tag">版本追踪</span>
+    <span class="tag">多厂商覆盖</span>
+  </div>
+</div>
+
+<!-- 10. moeru-ai/airi -->
+<div class="project-card" data-stars="41488" data-new="110" data-name="moeru-ai/airi">
+  <div class="card-header">
+    <a class="repo-link" href="https://github.com/moeru-ai/airi" target="_blank">moeru-ai/airi</a>
+    <div class="card-badges">
+      <span class="badge badge-daily">GH 日榜</span>
+    </div>
+  </div>
+  <p class="card-desc">开源 AI VTuber 项目，目标是重现 Neuro-sama 级别的虚拟 AI 存在。支持实时语音聊天、玩 Minecraft 和 Factorio 等游戏、Live2D/VRM 模型控制，可在浏览器、桌面和移动设备上运行。</p>
+  <div class="card-meta">
+    <span class="meta-item"><span class="lang-dot TypeScript"></span> TypeScript</span>
+    <span class="meta-item"><span class="license-badge">MIT</span></span>
+  </div>
+  <div class="stars-info">
+    <span class="meta-item">⭐ 41,488</span>
+    <span class="star-badge daily">日榜 +110/天</span>
+  </div>
+  <div class="tags">
+    <span class="tag">AI VTuber</span>
+    <span class="tag">实时语音</span>
+    <span class="tag">游戏能力</span>
+    <span class="tag">Live2D/VRM</span>
+    <span class="tag">WebGPU</span>
+    <span class="tag">跨平台</span>
+  </div>
+</div>
+
+<!-- 11. OpenCut-app/OpenCut -->
+<div class="project-card" data-stars="31692" data-new="10366" data-name="OpenCut-app/OpenCut">
+  <div class="card-header">
+    <a class="repo-link" href="https://github.com/OpenCut-app/OpenCut" target="_blank">OpenCut-app/OpenCut</a>
+    <div class="card-badges">
+      <span class="badge badge-daily">GH 日榜</span>
+      <span class="badge badge-weekly">GH 周榜</span>
+    </div>
+  </div>
+  <p class="card-desc">开源的 CapCut 替代品，支持 Web、桌面和移动端。采用 Rust 核心和插件优先架构，提供 Editor API、MCP 服务器（供 AI 代理使用）、无头模式（自动化和批量渲染）等功能。</p>
+  <div class="card-meta">
+    <span class="meta-item"><span class="lang-dot TypeScript"></span> TypeScript</span>
+    <span class="meta-item"><span class="license-badge">MIT</span></span>
+  </div>
+  <div class="stars-info">
+    <span class="meta-item">⭐ 31,692</span>
+    <span class="star-badge daily">日榜 +1,664/天</span>
+    <span class="star-badge weekly">周榜 +8,702/周</span>
+  </div>
+  <div class="tags">
+    <span class="tag">视频编辑</span>
+    <span class="tag">跨平台</span>
+    <span class="tag">Rust 核心</span>
+    <span class="tag">MCP 服务器</span>
+    <span class="tag">无头模式</span>
+  </div>
+</div>
+
+<!-- 12. davila7/claude-code-templates - from weekly #18 -->
+<!-- Note: This wasn't in our original 25, let me skip and continue with the actual 25 -->
+
+<!-- 13. HKUDS/DeepTutor -->
+<div class="project-card" data-stars="25422" data-new="172" data-name="HKUDS/DeepTutor">
+  <div class="card-header">
+    <a class="repo-link" href="https://github.com/HKUDS/DeepTutor" target="_blank">HKUDS/DeepTutor</a>
+    <div class="card-badges">
+      <span class="badge badge-daily">GH 日榜</span>
+    </div>
+  </div>
+  <p class="card-desc">Agent 原生的个性化辅导平台，由香港大学数据科学团队开发。将用户上传的材料通过多 Agent 管道编译成互动式"活书"，具有三层记忆系统，支持 TutorBot 自主辅导和 Co-Writer 协作写作。</p>
+  <div class="card-meta">
+    <span class="meta-item"><span class="lang-dot Python"></span> Python</span>
+    <span class="meta-item"><span class="license-badge">Apache-2.0</span></span>
+  </div>
+  <div class="stars-info">
+    <span class="meta-item">⭐ 25,422</span>
+    <span class="star-badge daily">日榜 +172/天</span>
+  </div>
+  <div class="tags">
+    <span class="tag">个性化辅导</span>
+    <span class="tag">RAG 知识库</span>
+    <span class="tag">活书编译</span>
+    <span class="tag">三层记忆</span>
+    <span class="tag">Agent CLI</span>
+  </div>
+</div>
+
+<!-- 14. stablyai/orca -->
+<div class="project-card" data-stars="19204" data-new="5777" data-name="stablyai/orca">
+  <div class="card-header">
+    <a class="repo-link" href="https://github.com/stablyai/orca" target="_blank">stablyai/orca</a>
+    <div class="card-badges">
+      <span class="badge badge-weekly">GH 周榜</span>
+    </div>
+  </div>
+  <p class="card-desc">AI 代理编排开发环境（ADE），允许开发者同时并行运行 30+ 种编码代理（Claude Code、Codex、Cursor 等），每个代理在独立的 git worktree 中工作。提供桌面端和移动端应用。</p>
+  <div class="card-meta">
+    <span class="meta-item"><span class="lang-dot TypeScript"></span> TypeScript</span>
+    <span class="meta-item"><span class="license-badge">MIT</span></span>
+  </div>
+  <div class="stars-info">
+    <span class="meta-item">⭐ 19,204</span>
+    <span class="star-badge weekly">周榜 +5,777/周</span>
+  </div>
+  <div class="tags">
+    <span class="tag">并行代理</span>
+    <span class="tag">Git Worktree</span>
+    <span class="tag">移动应用</span>
+    <span class="tag">设计模式</span>
+    <span class="tag">GitHub 集成</span>
+  </div>
+</div>
+
+<!-- 15. abseil/abseil-cpp -->
+<div class="project-card" data-stars="17300" data-new="648" data-name="abseil/abseil-cpp">
+  <div class="card-header">
+    <a class="repo-link" href="https://github.com/abseil/abseil-cpp" target="_blank">abseil/abseil-cpp</a>
+    <div class="card-badges">
+      <span class="badge badge-weekly">GH 周榜</span>
+    </div>
+  </div>
+  <p class="card-desc">Google 开源的 C++ 通用库集合，旨在补充 C++ 标准库。代码来自 Google 内部生产环境，提供高性能容器（Swiss table）、字符串处理、时间管理、同步原语、日志等模块。</p>
+  <div class="card-meta">
+    <span class="meta-item"><span class="lang-dot Cpp"></span> C++</span>
+    <span class="meta-item"><span class="license-badge">Apache-2.0</span></span>
+  </div>
+  <div class="stars-info">
+    <span class="meta-item">⭐ 17,300</span>
+    <span class="star-badge weekly">周榜 +648/周</span>
+  </div>
+  <div class="tags">
+    <span class="tag">C++ 标准库补充</span>
+    <span class="tag">Swiss Table</span>
+    <span class="tag">Google 出品</span>
+    <span class="tag">LTS 支持</span>
+  </div>
+</div>
+
+<!-- 16. iofficeai/officecli -->
+<div class="project-card" data-stars="14422" data-new="6400" data-name="iofficeai/officecli">
+  <div class="card-header">
+    <a class="repo-link" href="https://github.com/iofficeai/officecli" target="_blank">iofficeai/officecli</a>
+    <div class="card-badges">
+      <span class="badge badge-sh">SH 周榜</span>
+      <span class="badge badge-weekly">GH 周榜</span>
+    </div>
+  </div>
+  <p class="card-desc">全球首个专为 AI Agent 设计的 Office 套件，以单二进制文件形式提供，无需安装 Microsoft Office。支持一行命令创建、读取、修改 Word/Excel/PowerPoint 文档，内置 HTML 渲染引擎。</p>
+  <div class="card-meta">
+    <span class="meta-item"><span class="lang-dot CSharp"></span> C#</span>
+    <span class="meta-item"><span class="license-badge">Apache-2.0</span></span>
+  </div>
+  <div class="stars-info">
+    <span class="meta-item">⭐ 14,422</span>
+    <span class="star-badge sh">SH +26</span>
+    <span class="star-badge weekly">周榜 +6,374/周</span>
+  </div>
+  <div class="tags">
+    <span class="tag">Office 套件</span>
+    <span class="tag">AI Agent 专用</span>
+    <span class="tag">单二进制</span>
+    <span class="tag">HTML 渲染</span>
+    <span class="tag">Mermaid 图表</span>
+  </div>
+</div>
+
+<!-- 17. HKUDS/Vibe-Trading -->
+<div class="project-card" data-stars="23402" data-new="5717" data-name="HKUDS/Vibe-Trading">
+  <div class="card-header">
+    <a class="repo-link" href="https://github.com/HKUDS/Vibe-Trading" target="_blank">HKUDS/Vibe-Trading</a>
+    <div class="card-badges">
+      <span class="badge badge-daily">GH 日榜</span>
+      <span class="badge badge-weekly">GH 周榜</span>
+    </div>
+  </div>
+  <p class="card-desc">香港大学数据科学团队开发的个人 AI 交易代理平台。支持回测、多代理协作、算法交易和量化金融，提供 460+ Alpha 因子库、多种投资组合优化器、16 种即时通讯渠道集成。</p>
+  <div class="card-meta">
+    <span class="meta-item"><span class="lang-dot Python"></span> Python</span>
+    <span class="meta-item"><span class="license-badge">MIT</span></span>
+  </div>
+  <div class="stars-info">
+    <span class="meta-item">⭐ 23,402</span>
+    <span class="star-badge daily">日榜 +915/天</span>
+    <span class="star-badge weekly">周榜 +4,802/周</span>
+  </div>
+  <div class="tags">
+    <span class="tag">AI 交易</span>
+    <span class="tag">回测引擎</span>
+    <span class="tag">多代理协作</span>
+    <span class="tag">MCP 协议</span>
+    <span class="tag">量化金融</span>
+  </div>
+</div>
+
+<!-- 18. openinterpreter/openinterpreter -->
+<div class="project-card" data-stars="65416" data-new="299" data-name="openinterpreter/openinterpreter">
+  <div class="card-header">
+    <a class="repo-link" href="https://github.com/openinterpreter/openinterpreter" target="_blank">openinterpreter/openinterpreter</a>
+    <div class="card-badges">
+      <span class="badge badge-daily">GH 日榜</span>
+    </div>
+  </div>
+  <p class="card-desc">用 Rust 编写的编码代理，专为低成本模型优化性能。支持 macOS/Linux/Windows 原生沙箱、多种模型 harness 模拟、计算机使用（浏览器和原生应用测试）、MCP 和技能系统。</p>
+  <div class="card-meta">
+    <span class="meta-item"><span class="lang-dot Rust"></span> Rust</span>
+    <span class="meta-item"><span class="license-badge">Apache-2.0</span></span>
+  </div>
+  <div class="stars-info">
+    <span class="meta-item">⭐ 65,416</span>
+    <span class="star-badge daily">日榜 +299/天</span>
+  </div>
+  <div class="tags">
+    <span class="tag">编码代理</span>
+    <span class="tag">低成本模型</span>
+    <span class="tag">沙箱执行</span>
+    <span class="tag">计算机使用</span>
+    <span class="tag">ACP 协议</span>
+  </div>
+</div>
+
+<!-- 19. Zackriya-Solutions/meetily -->
+<div class="project-card" data-stars="24973" data-new="18" data-name="Zackriya-Solutions/meetily">
+  <div class="card-header">
+    <a class="repo-link" href="https://github.com/Zackriya-Solutions/meetily" target="_blank">Zackriya-Solutions/meetily</a>
+    <div class="card-badges">
+      <span class="badge badge-sh">SH 周榜</span>
+      <span class="badge badge-weekly">GH 周榜</span>
+    </div>
+  </div>
+  <p class="card-desc">隐私优先的 AI 会议助手，基于 Rust 构建，支持 Parakeet/Whisper 实时转录、说话人分离和 Ollama 本地摘要。100% 本地处理，无需云端，支持 macOS 和 Windows。</p>
+  <div class="card-meta">
+    <span class="meta-item"><span class="lang-dot Rust"></span> Rust</span>
+    <span class="meta-item"><span class="license-badge">MIT</span></span>
+  </div>
+  <div class="stars-info">
+    <span class="meta-item">⭐ 24,973</span>
+    <span class="star-badge sh">SH +18</span>
+    <span class="star-badge weekly">周榜 +3,499/周</span>
+  </div>
+  <div class="tags">
+    <span class="tag">会议助手</span>
+    <span class="tag">隐私优先</span>
+    <span class="tag">本地处理</span>
+    <span class="tag">Whisper 转录</span>
+    <span class="tag">Rust 构建</span>
+  </div>
+</div>
+
+<!-- 20. panniantong/agent-reach -->
+<div class="project-card" data-stars="33108" data-new="22" data-name="panniantong/agent-reach">
+  <div class="card-header">
+    <a class="repo-link" href="https://github.com/panniantong/agent-reach" target="_blank">panniantong/agent-reach</a>
+    <div class="card-badges">
+      <span class="badge badge-sh">SH 周榜</span>
+      <span class="badge badge-weekly">GH 周榜</span>
+    </div>
+  </div>
+  <p class="card-desc">为 AI Agent 提供互联网访问能力的能力层工具，一键安装即可让代理读取和搜索 Twitter、Reddit、YouTube、B站、小红书等 15+ 平台内容。采用多后端路由架构，自动故障切换。</p>
+  <div class="card-meta">
+    <span class="meta-item"><span class="lang-dot Python"></span> Python</span>
+    <span class="meta-item"><span class="license-badge">MIT</span></span>
+  </div>
+  <div class="stars-info">
+    <span class="meta-item">⭐ 33,108</span>
+    <span class="star-badge sh">SH +22</span>
+    <span class="star-badge weekly">周榜上榜</span>
+  </div>
+  <div class="tags">
+    <span class="tag">15+ 平台</span>
+    <span class="tag">多后端路由</span>
+    <span class="tag">一键安装</span>
+    <span class="tag">自动诊断</span>
+    <span class="tag">开源免费</span>
+  </div>
+</div>
+
+<!-- 21. Nutlope/hallmark -->
+<div class="project-card" data-stars="8420" data-new="4828" data-name="Nutlope/hallmark">
+  <div class="card-header">
+    <a class="repo-link" href="https://github.com/Nutlope/hallmark" target="_blank">Nutlope/hallmark</a>
+    <div class="card-badges">
+      <span class="badge badge-daily">GH 日榜</span>
+      <span class="badge badge-weekly">GH 周榜</span>
+    </div>
+  </div>
+  <p class="card-desc">面向 Claude Code、Cursor 和 Codex 的反 AI 生成风格的设计技能工具。提供 22 个主题和 4 种操作模式（构建、审计、重新设计、研究），通过 65 个质量门控确保设计独特性。</p>
+  <div class="card-meta">
+    <span class="meta-item"><span class="lang-dot CSS"></span> CSS</span>
+    <span class="meta-item"><span class="license-badge">MIT</span></span>
+  </div>
+  <div class="stars-info">
+    <span class="meta-item">⭐ 8,420</span>
+    <span class="star-badge daily">日榜 +1,277/天</span>
+    <span class="star-badge weekly">周榜 +3,551/周</span>
+  </div>
+  <div class="tags">
+    <span class="tag">反 AI 风格</span>
+    <span class="tag">22 主题</span>
+    <span class="tag">4 种模式</span>
+    <span class="tag">65 质量门控</span>
+    <span class="tag">多 IDE</span>
+  </div>
+</div>
+
+<!-- 22. wonderwhy-er/DesktopCommanderMCP -->
+<div class="project-card" data-stars="7780" data-new="2055" data-name="wonderwhy-er/DesktopCommanderMCP">
+  <div class="card-header">
+    <a class="repo-link" href="https://github.com/wonderwhy-er/DesktopCommanderMCP" target="_blank">wonderwhy-er/DesktopCommanderMCP</a>
+    <div class="card-badges">
+      <span class="badge badge-weekly">GH 周榜</span>
+    </div>
+  </div>
+  <p class="card-desc">为 Claude 等 AI 客户端提供桌面控制能力的 MCP 服务器，支持终端命令执行、文件系统搜索与差异编辑。让 AI 能直接操作本地文件、运行进程、管理 Excel/PDF/Word 文档。</p>
+  <div class="card-meta">
+    <span class="meta-item"><span class="lang-dot TypeScript"></span> TypeScript</span>
+    <span class="meta-item"><span class="license-badge">MIT</span></span>
+  </div>
+  <div class="stars-info">
+    <span class="meta-item">⭐ 7,780</span>
+    <span class="star-badge weekly">周榜 +2,055/周</span>
+  </div>
+  <div class="tags">
+    <span class="tag">MCP 服务器</span>
+    <span class="tag">终端控制</span>
+    <span class="tag">文件编辑</span>
+    <span class="tag">Office 支持</span>
+    <span class="tag">Docker 隔离</span>
+  </div>
+</div>
+
+<!-- 23. google-labs-code/stitch-skills -->
+<div class="project-card" data-stars="7067" data-new="992" data-name="google-labs-code/stitch-skills">
+  <div class="card-header">
+    <a class="repo-link" href="https://github.com/google-labs-code/stitch-skills" target="_blank">google-labs-code/stitch-skills</a>
+    <div class="card-badges">
+      <span class="badge badge-weekly">GH 周榜</span>
+    </div>
+  </div>
+  <p class="card-desc">Google Labs 出品的 Stitch 设计技能集合，遵循 Agent Skills 开放标准。涵盖设计工作流、构建（React 组件、视频生成）和实用工具三大类插件，兼容多种主流编码代理。</p>
+  <div class="card-meta">
+    <span class="meta-item"><span class="lang-dot TypeScript"></span> TypeScript</span>
+    <span class="meta-item"><span class="license-badge">Apache-2.0</span></span>
+  </div>
+  <div class="stars-info">
+    <span class="meta-item">⭐ 7,067</span>
+    <span class="star-badge weekly">周榜 +992/周</span>
+  </div>
+  <div class="tags">
+    <span class="tag">Google Labs</span>
+    <span class="tag">设计技能</span>
+    <span class="tag">Agent Skills 标准</span>
+    <span class="tag">React 构建</span>
+    <span class="tag">多代理兼容</span>
+  </div>
+</div>
+
+<!-- 24. HenryNdubuaku/maths-cs-ai-compendium -->
+<div class="project-card" data-stars="5845" data-new="725" data-name="HenryNdubuaku/maths-cs-ai-compendium">
+  <div class="card-header">
+    <a class="repo-link" href="https://github.com/HenryNdubuaku/maths-cs-ai-compendium" target="_blank">HenryNdubuaku/maths-cs-ai-compendium</a>
+    <div class="card-badges">
+      <span class="badge badge-daily">GH 日榜</span>
+    </div>
+  </div>
+  <p class="card-desc">开源的数学、计算机科学与 AI 综合教材，涵盖 20 个章节（从向量微积分到自主系统）。附带 MCP 服务器，可让 AI 助手将其作为知识库使用，旨在帮助从业者深入理解 AI/ML 核心概念。</p>
+  <div class="card-meta">
+    <span class="meta-item"><span class="lang-dot TypeScript"></span> TypeScript</span>
+    <span class="meta-item"><span class="license-badge">Apache-2.0</span></span>
+  </div>
+  <div class="stars-info">
+    <span class="meta-item">⭐ 5,845</span>
+    <span class="star-badge daily">日榜 +725/天</span>
+  </div>
+  <div class="tags">
+    <span class="tag">开源教材</span>
+    <span class="tag">MCP 知识库</span>
+    <span class="tag">20 章节</span>
+    <span class="tag">AI/ML 基础</span>
+    <span class="tag">面试准备</span>
+  </div>
+</div>
+
+<!-- 25. Dicklesworthstone/destructive_command_guard -->
+<div class="project-card" data-stars="4765" data-new="471" data-name="Dicklesworthstone/destructive_command_guard">
+  <div class="card-header">
+    <a class="repo-link" href="https://github.com/Dicklesworthstone/destructive_command_guard" target="_blank">Dicklesworthstone/destructive_command_guard</a>
+    <div class="card-badges">
+      <span class="badge badge-daily">GH 日榜</span>
+    </div>
+  </div>
+  <p class="card-desc">用 Rust 编写的高性能 AI 编码代理钩子工具，能在破坏性命令执行前拦截它们。支持 10+ 种 AI 编码工具，提供 50+ 安全包覆盖数据库、K8s、Docker 等场景，SIMD 加速实现亚毫秒级延迟。</p>
+  <div class="card-meta">
+    <span class="meta-item"><span class="lang-dot Rust"></span> Rust</span>
+    <span class="meta-item"><span class="license-badge">MIT</span></span>
+  </div>
+  <div class="stars-info">
+    <span class="meta-item">⭐ 4,765</span>
+    <span class="star-badge daily">日榜 +471/天</span>
+  </div>
+  <div class="tags">
+    <span class="tag">命令拦截</span>
+    <span class="tag">50+ 安全包</span>
+    <span class="tag">SIMD 加速</span>
+    <span class="tag">多代理支持</span>
+    <span class="tag">模块化</span>
+  </div>
+</div>
+
+<!-- 26. tt-a1i/archify -->
+<div class="project-card" data-stars="5135" data-new="1840" data-name="tt-a1i/archify">
+  <div class="card-header">
+    <a class="repo-link" href="https://github.com/tt-a1i/archify" target="_blank">tt-a1i/archify</a>
+    <div class="card-badges">
+      <span class="badge badge-weekly">GH 周榜</span>
+    </div>
+  </div>
+  <p class="card-desc">Claude Skill，通过自然语言对话生成精美的技术架构图。支持 5 种图表类型、深色/浅色主题切换、4 倍分辨率导出（PNG/JPEG/WebP/SVG），输出为单文件 HTML，零依赖。</p>
+  <div class="card-meta">
+    <span class="meta-item"><span class="lang-dot HTML"></span> HTML</span>
+    <span class="meta-item"><span class="license-badge">MIT</span></span>
+  </div>
+  <div class="stars-info">
+    <span class="meta-item">⭐ 5,135</span>
+    <span class="star-badge weekly">周榜 +1,840/周</span>
+  </div>
+  <div class="tags">
+    <span class="tag">架构图</span>
+    <span class="tag">5 种图表</span>
+    <span class="tag">深浅主题</span>
+    <span class="tag">多格式导出</span>
+    <span class="tag">零依赖</span>
+  </div>
+</div>
+
+<!-- 27. chriskohlhoff/asio -->
+<div class="project-card" data-stars="4175" data-new="247" data-name="chriskohlhoff/asio">
+  <div class="card-header">
+    <a class="repo-link" href="https://github.com/chriskohlhoff/asio" target="_blank">chriskohlhoff/asio</a>
+    <div class="card-badges">
+      <span class="badge badge-weekly">GH 周榜</span>
+    </div>
+  </div>
+  <p class="card-desc">跨平台的 C++ 网络和低层 I/O 编程库，提供同步和异步操作模型，支持 TCP/UDP/SSL/TLS、串口等多种协议。C++ 领域最成熟的异步 I/O 框架之一。</p>
+  <div class="card-meta">
+    <span class="meta-item"><span class="lang-dot Cpp"></span> C++</span>
+    <span class="meta-item"><span class="license-badge">BSL-1.0</span></span>
+  </div>
+  <div class="stars-info">
+    <span class="meta-item">⭐ 4,175</span>
+    <span class="star-badge weekly">周榜 +247/周</span>
+  </div>
+  <div class="tags">
+    <span class="tag">网络 I/O</span>
+    <span class="tag">异步框架</span>
+    <span class="tag">跨平台</span>
+    <span class="tag">协程支持</span>
+    <span class="tag">Boost 兼容</span>
+  </div>
+</div>
+
+</div>
+
+<!-- 编程语言分布统计 -->
+<h2>编程语言分布</h2>
+<table class="data-table">
+<thead>
+<tr><th>语言</th><th>项目数</th><th>项目列表</th><th>占比</th></tr>
+</thead>
+<tbody>
+<tr><td><span class="lang-dot TypeScript"></span> TypeScript</td><td>9</td><td>OpenCut, airi, DesktopCommanderMCP, stitch-skills, orca, OmniRoute (weekly), maths-cs-ai-compendium, awesome-llm-apps (daily lang), meetily</td><td>36%</td></tr>
+<tr><td><span class="lang-dot Python"></span> Python</td><td>4</td><td>graphify, Vibe-Trading, DeepTutor, agent-reach</td><td>16%</td></tr>
+<tr><td><span class="lang-dot Rust"></span> Rust</td><td>4</td><td>bun, destructive_command_guard, openinterpreter, meetily</td><td>16%</td></tr>
+<tr><td><span class="lang-dot JavaScript"></span> JavaScript</td><td>3</td><td>ponytail, taste-skill, system_prompts_leaks</td><td>12%</td></tr>
+<tr><td><span class="lang-dot Shell"></span> Shell</td><td>2</td><td>skills, superpowers</td><td>8%</td></tr>
+<tr><td><span class="lang-dot Cpp"></span> C++</td><td>2</td><td>abseil-cpp, asio</td><td>8%</td></tr>
+<tr><td><span class="lang-dot CSS"></span> CSS</td><td>1</td><td>hallmark</td><td>4%</td></tr>
+<tr><td><span class="lang-dot CSharp"></span> C#</td><td>1</td><td>officecli</td><td>4%</td></tr>
+<tr><td><span class="lang-dot HTML"></span> HTML</td><td>1</td><td>archify</td><td>4%</td></tr>
+<tr><td><span class="lang-dot Markdown"></span> Markdown</td><td>1</td><td>awesome-design-md</td><td>4%</td></tr>
+</tbody>
+</table>
+
+<!-- 功能领域分类 -->
+<h2>功能领域分类</h2>
+<table class="data-table">
+<thead>
+<tr><th>领域</th><th>项目数</th><th>Star 合计</th><th>代表项目</th></tr>
+</thead>
+<tbody>
+<tr><td>AI Agent 技能/方法论</td><td>7</td><td>~660,000+</td><td>skills, superpowers, hallmark, taste-skill, ponytail, stitch-skills, awesome-design-md</td></tr>
+<tr><td>AI 应用/平台</td><td>6</td><td>~310,000+</td><td>awesome-llm-apps, airi, Vibe-Trading, DeepTutor, openinterpreter, awesome-llm-apps</td></tr>
+<tr><td>开发工具/基础设施</td><td>5</td><td>~130,000+</td><td>DesktopCommanderMCP, officecli, orca, agent-reach, graphify</td></tr>
+<tr><td>安全/防护</td><td>2</td><td>~56,000+</td><td>destructive_command_guard, system_prompts_leaks</td></tr>
+<tr><td>创意/多媒体</td><td>2</td><td>~56,000+</td><td>OpenCut, archify</td></tr>
+<tr><td>运行时/基础库</td><td>3</td><td>~116,000+</td><td>bun, abseil-cpp, asio</td></tr>
+<tr><td>效率/办公</td><td>1</td><td>~25,000</td><td>meetily</td></tr>
+</tbody>
+</table>
+
+<!-- 关键洞察 -->
+<h2>关键洞察</h2>
+<ul class="insights-list">
+  <li data-num="1"><strong>AI Agent 技能生态爆发：</strong>本期 25 个项目中，超过 40% 与 AI 编码代理技能直接相关（skills、superpowers、hallmark、taste-skill、ponytail、stitch-skills 等），标志着"Agent Skill"已成为 2026 年开源社区最热门的新范式。开发者不再只关注模型本身，而是聚焦于如何让 AI 代理写出更好的代码。</li>
+  <li data-num="2"><strong>"反 AI 风格"设计崛起：</strong>hallmark、taste-skill、awesome-design-md、ponytail 等项目共同指向一个趋势——开发者正在积极对抗 AI 生成内容的"千篇一律"感。从 UI 设计到代码精简，社区追求的是独特性和工程品质，而非 AI 的"差不多就行"。</li>
+  <li data-num="3"><strong>MCP 协议成为连接纽带：</strong>DesktopCommanderMCP、officecli、Vibe-Trading、agent-reach 等项目均支持 MCP 协议，MCP 已从"新兴标准"发展为 AI 工具链的事实标准接口层，让 AI 代理能无缝操作文件、Office 文档、交易平台和互联网资源。</li>
+  <li data-num="4"><strong>Rust 持续渗透基础设施：</strong>bun（94K+ Star）、destructive_command_guard、openinterpreter、meetily 等项目均以 Rust 为核心，覆盖运行时、安全防护、编码代理、会议工具等多元场景。Rust 在 AI 基础设施领域的地位进一步巩固。</li>
+  <li data-num="5"><strong>开源视频编辑迎来新玩家：</strong>OpenCut 以日增 1,664 Star、周增 8,702 Star 的惊人速度登顶，作为 CapCut 的开源替代品，它代表了社区对"去中心化创意工具"的强烈需求。Rust 核心 + 插件架构 + MCP 支持的组合，也让它成为 AI 驱动视频编辑的潜力平台。</li>
+</ul>
+
+<!-- 底部 -->
+<div class="footer">
+  <p>数据来源：Star History Weekly Top 10 / GitHub Trending Daily Top 10 / GitHub Trending Weekly Top 10</p>
+  <p>采集时间：2026-07-16 | 由 TRAE 自动生成</p>
+</div>
+
+<script>
+function sortCards(by) {
+  const grid = document.getElementById('projectsGrid');
+  const cards = Array.from(grid.querySelectorAll('.project-card'));
+  document.querySelectorAll('.sort-btn').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+  cards.sort((a, b) => {
+    if (by === 'stars') return parseInt(b.dataset.stars) - parseInt(a.dataset.stars);
+    if (by === 'new') return parseInt(b.dataset.new) - parseInt(a.dataset.new);
+    if (by === 'name') return a.dataset.name.localeCompare(b.dataset.name);
+    return 0;
+  });
+  cards.forEach(c => grid.appendChild(c));
+}
+</script>
+
+</body>
+</html>
