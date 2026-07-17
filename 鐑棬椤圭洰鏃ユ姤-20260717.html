@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GitHub 热门项目日报 - 2026-07-17</title>
+<style>
+:root {
+  --bg-primary: #0d1117;
+  --bg-secondary: #161b22;
+  --bg-tertiary: #21262d;
+  --border: #30363d;
+  --text-primary: #c9d1d9;
+  --text-secondary: #8b949e;
+  --text-link: #58a6ff;
+  --accent-orange: #f0883e;
+  --accent-blue: #58a6ff;
+  --accent-green: #3fb950;
+  --accent-purple: #bc8cff;
+  --accent-red: #f85149;
+  --accent-yellow: #d29922;
+  --tag-bg: rgba(56,139,253,0.15);
+  --tag-text: #58a6ff;
+  --card-shadow: 0 1px 3px rgba(0,0,0,0.3);
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+  line-height: 1.6;
+  padding: 20px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+h1 { font-size: 2em; margin-bottom: 8px; color: #fff; }
+h2 { font-size: 1.5em; margin: 40px 0 20px; color: #fff; border-bottom: 1px solid var(--border); padding-bottom: 10px; }
+h3 { font-size: 1.2em; margin: 0; }
+a { color: var(--text-link); text-decoration: none; }
+a:hover { text-decoration: underline; }
+.subtitle { color: var(--text-secondary); font-size: 0.95em; margin-bottom: 30px; }
+
+/* Stats Cards */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-bottom: 40px;
+}
+.stat-card {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 20px;
+  text-align: center;
+}
+.stat-value { font-size: 2.2em; font-weight: 700; color: #fff; }
+.stat-label { color: var(--text-secondary); font-size: 0.9em; margin-top: 4px; }
+.stat-card:nth-child(1) .stat-value { color: var(--accent-green); }
+.stat-card:nth-child(2) .stat-value { color: var(--accent-blue); }
+.stat-card:nth-child(3) .stat-value { color: var(--accent-purple); }
+.stat-card:nth-child(4) .stat-value { color: var(--accent-orange); }
+
+/* Cross-list section */
+.cross-list-section { margin-bottom: 40px; }
+.cross-list-item {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent-purple);
+  border-radius: 6px;
+  padding: 14px 18px;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.cross-list-item .repo-name { font-weight: 600; color: #fff; font-size: 1.05em; }
+.badge {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 12px;
+  font-size: 0.75em;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.badge-sh { background: rgba(240,136,62,0.2); color: var(--accent-orange); }
+.badge-daily { background: rgba(88,166,255,0.2); color: var(--accent-blue); }
+.badge-weekly { background: rgba(63,185,80,0.2); color: var(--accent-green); }
+.badge-count { background: rgba(188,140,255,0.2); color: var(--accent-purple); }
+
+/* Project Cards */
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(420px, 1fr));
+  gap: 20px;
+  margin-bottom: 40px;
+}
+.project-card {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 22px;
+  transition: border-color 0.2s;
+}
+.project-card:hover { border-color: var(--text-secondary); }
+.card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; gap: 8px; flex-wrap: wrap; }
+.card-header .repo-link { font-size: 1.15em; font-weight: 700; color: var(--text-link); }
+.card-badges { display: flex; gap: 6px; flex-wrap: wrap; }
+.card-desc { color: var(--text-secondary); font-size: 0.9em; margin-bottom: 14px; line-height: 1.55; }
+.card-meta { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 12px; font-size: 0.85em; color: var(--text-secondary); }
+.card-meta .meta-item { display: flex; align-items: center; gap: 4px; }
+.lang-dot {
+  width: 10px; height: 10px; border-radius: 50%; display: inline-block;
+}
+.lang-dot.TypeScript { background: #3178c6; }
+.lang-dot.Python { background: #3572A5; }
+.lang-dot.Rust { background: #dea584; }
+.lang-dot.JavaScript { background: #f1e05a; }
+.lang-dot.Shell { background: #89e051; }
+.lang-dot.CSS { background: #563d7c; }
+.lang-dot.Cpp { background: #f34b7d; }
+.lang-dot.CSharp { background: #178600; }
+.lang-dot.HTML { background: #e34c26; }
+.lang-dot.Markdown { background: #083fa1; }
+.lang-dot.Jupyter { background: #DA5B0B; }
+.stars-info { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 12px; font-size: 0.85em; }
+.star-badge { padding: 2px 8px; border-radius: 4px; font-weight: 500; }
+.star-badge.sh { background: rgba(240,136,62,0.15); color: var(--accent-orange); }
+.star-badge.daily { background: rgba(88,166,255,0.15); color: var(--accent-blue); }
+.star-badge.weekly { background: rgba(63,185,80,0.15); color: var(--accent-green); }
+.tags { display: flex; gap: 6px; flex-wrap: wrap; }
+.tag {
+  background: var(--tag-bg);
+  color: var(--tag-text);
+  padding: 2px 10px;
+  border-radius: 12px;
+  font-size: 0.75em;
+}
+.license-badge {
+  background: rgba(139,148,158,0.15);
+  color: var(--text-secondary);
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 0.8em;
+}
+
+/* Tables */
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 30px;
+  font-size: 0.9em;
+}
+.data-table th {
+  background: var(--bg-tertiary);
+  padding: 10px 14px;
+  text-align: left;
+  border-bottom: 2px solid var(--border);
+  color: #fff;
+  font-weight: 600;
+}
+.data-table td {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+}
+.data-table tr:hover td { background: rgba(255,255,255,0.03); }
+.data-table .lang-cell { display: flex; align-items: center; gap: 6px; }
+
+/* Insights */
+.insights-list { list-style: none; }
+.insights-list li {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 16px 20px;
+  margin-bottom: 10px;
+  position: relative;
+  padding-left: 48px;
+}
+.insights-list li::before {
+  content: attr(data-num);
+  position: absolute;
+  left: 16px;
+  top: 16px;
+  width: 22px;
+  height: 22px;
+  background: var(--accent-blue);
+  color: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75em;
+  font-weight: 700;
+}
+
+/* Footer */
+.footer {
+  margin-top: 50px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+  color: var(--text-secondary);
+  font-size: 0.85em;
+  text-align: center;
+}
+
+/* Sort buttons */
+.sort-bar { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
+.sort-btn {
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  padding: 6px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.85em;
+  transition: all 0.2s;
+}
+.sort-btn:hover, .sort-btn.active { background: var(--accent-blue); color: #fff; border-color: var(--accent-blue); }
+
+@media (max-width: 768px) {
+  .projects-grid { grid-template-columns: 1fr; }
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  h1 { font-size: 1.5em; }
+}
+</style>
+</head>
+<body>
+
+<h1>GitHub 热门项目日报</h1>
+<p class="subtitle">数据采集日期：2026-07-17 | 数据来源：Star History Weekly / GitHub Trending Daily / GitHub Trending Weekly</p>
+
+<!-- 统计概览 -->
+<div class="stats-grid">
+  <div class="stat-card">
+    <div class="stat-value">17</div>
+    <div class="stat-label">去重后项目总数</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-value">11,698</div>
+    <div class="stat-label">三榜新增 Star 总计</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-value">7</div>
+    <div class="stat-label">跨榜项目数</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-value">10</div>
+    <div class="stat-label">编程语言种类数</div>
+  </div>
+</div>
+
+<!-- 跨榜项目高亮 -->
+<h2>跨榜项目高亮</h2>
+<div class="cross-list-section">
+<div class="cross-list-item">
+  <span class="repo-name">obra/superpowers</span>
+  <span class="badge badge-count">涓夋涓婃</span>
+  <span class="badge badge-sh">SH 鍛ㄦ</span>
+  <span class="badge badge-daily">GH 鏃ユ</span>
+  <span class="badge badge-weekly">GH 鍛ㄦ</span>
+</div>
+<div class="cross-list-item">
+  <span class="repo-name">mattpocock/skills</span>
+  <span class="badge badge-count">鍙屾涓婃</span>
+  <span class="badge badge-sh">SH 鍛ㄦ</span>
+  <span class="badge badge-daily">GH 鏃ユ</span>
+</div>
+<div class="cross-list-item">
+  <span class="repo-name">OpenCut-app/OpenCut</span>
+  <span class="badge badge-count">鍙屾涓婃</span>
+  <span class="badge badge-sh">SH 鍛ㄦ</span>
+  <span class="badge badge-daily">GH 鏃ユ</span>
+</div>
+<div class="cross-list-item">
+  <span class="repo-name">Graphify-Labs/graphify</span>
+  <span class="badge badge-count">鍙屾涓婃</span>
+  <span class="badge badge-sh">SH 鍛ㄦ</span>
+  <span class="badge badge-daily">GH 鏃ユ</span>
+</div>
+<div class="cross-list-item">
+  <span class="repo-name">Shubhamsaboo/awesome-llm-apps</span>
+  <span class="badge badge-count">鍙屾涓婃</span>
+  <span class="badge badge-sh">SH 鍛ㄦ</span>
+  <span class="badge badge-daily">GH 鏃ユ</span>
+</div>
+<div class="cross-list-item">
+  <span class="repo-name">iOfficeAI/OfficeCLI</span>
+  <span class="badge badge-count">鍙屾涓婃</span>
+  <span class="badge badge-sh">SH 鍛ㄦ</span>
+  <span class="badge badge-daily">GH 鏃ユ</span>
+</div>
+<div class="cross-list-item">
+  <span class="repo-name">JuliusBrussee/caveman</span>
+  <span class="badge badge-count">鍙屾涓婃</span>
+  <span class="badge badge-sh">SH 鍛ㄦ</span>
+  <span class="badge badge-daily">GH 鏃ユ</span>
+</div>
+<div class="cross-list-item">
+  <span class="repo-name">multica-ai/andrej-karpathy-skills</span>
+  <span class="badge badge-count">鍙屾涓婃</span>
+  <span class="badge badge-sh">SH 鍛ㄦ</span>
+  <span class="badge badge-daily">GH 鏃ユ</span>
+</div>
+</div>
+
+<!-- 全量项目详情 -->
+<h2>全量项目详情</h2>
+<div class="sort-bar">
+  <button class="sort-btn active" onclick="sortCards('stars')">按总 Star 排序</button>
+  <button class="sort-btn" onclick="sortCards('new')">按新增 Star 排序</button>
+  <button class="sort-btn" onclick="sortCards('name')">按名称排序</button>
+</div>
+
+<div class="projects-grid" id="projectsGrid">
+<div class="project-card" data-stars="255974" data-new="20" data-name="obra/superpowers">
+  <div class="card-header">
+    <a class="repo-link" href="https://github.com/obra/superpowers" target="_blank">obra/superpowers</a>
+    <div class="card-badges"><span class="badge badge-sh">SH 鍛ㄦ</span><span class="badge badge-daily">GH 鏃ユ</span><span class="badge badge-weekly">GH 鍛ㄦ</span></div>
+  </div>
+  <p class="card-desc">涓€濂楃粡杩囧疄鎴橀獙璇佺殑 AI Agent 鎶€鑳芥鏋朵笌杞欢寮€鍙戞柟娉曡銆傚畠涓?Claude Code 绛?AI 缂栫▼鍔╂墜鎻愪緵瀹屾暣鐨?SDLC 鎶€鑳介泦锛屾兜鐩栧ご鑴戦鏆淬€乀DD銆佷唬鐮佸鏌ャ€佹灦鏋勫璁＄瓑鐜妭锛岃 AI 鍍忚祫娣卞伐绋嬪笀涓€鏍烽伒寰伐绋嬬邯寰嬨€?/p>
+  <div class="card-meta">
+    <div class="meta-item"><span class="lang-dot Shell"></span> Shell</div>
+    <div class="meta-item">猸?255,974</div>
+    <span class="license-badge">MIT</span>
+  </div>
+  <div class="stars-info">
+    <span class="star-badge sh">SH 鍛ㄦ +20/鍛?/span>
+    <span class="star-badge daily">鏃ユ绾?+1,200/澶?/span>
+  </div>
+  <div class="tags"><span class="tag">Agent 妗嗘灦</span><span class="tag">鎶€鑳界郴缁?/span><span class="tag">SDLC</span><span class="tag">TDD</span><span class="tag">Claude Code</span></div>
+</div>
+<div class="project-card" data-stars="193264" data-new="21" data-name="multica-ai/andrej-karpathy-skills">
+  <div class="card-header">
+    <a class="repo-link" href="https://github.com/multica-ai/andrej-karpathy-skills" target="_blank">multica-ai/andrej-karpathy-skills</a>
+    <div class="card-badges"><span class="badge badge-sh">SH 鍛ㄦ</span><span class="badge badge-daily">GH 鏃ユ</span></div>
+  </div>
+  <p class="card-desc">鍩轰簬 AI 鍏堥┍ Andrej Karpathy 瀵?LLM 缂栫爜闄烽槺鐨勮瀵燂紝鎻愮偧鍑轰竴涓?CLAUDE.md 鏂囦欢鏉ョ郴缁熸€ф敼鍠?Claude Code 鐨勮涓鸿〃鐜般€傛兜鐩栧父瑙佸弽妯″紡瑙勯伩銆佷唬鐮佽川閲忔彁鍗囧拰宸ョ▼鏈€浣冲疄璺碉紝鏄皟鏁?AI 缂栫爜鍔╂墜鐨勫疄鐢ㄦ寚鍗椼€?/p>
+  <div class="card-meta">
+    <div class="meta-item">猸?193,264</div>
+    <span class="license-badge">鏈爣娉?/span>
+  </div>
+  <div class="stars-info">
+    <span class="star-badge sh">SH 鍛ㄦ +21/鍛?/span>
+  </div>
+  <div class="tags"><span class="tag">Claude Code</span><span class="tag">LLM 琛屼负浼樺寲</span><span class="tag">鏈€浣冲疄璺?/span><span class="tag">Karpathy</span></div>
+</div>
+<div class="project-card" data-stars="174256" data-new="54" data-name="mattpocock/skills">
+  <div class="card-header">
+    <a class="repo-link" href="https://github.com/mattpocock/skills" target="_blank">mattpocock/skills</a>
+    <div class="card-badges"><span class="badge badge-sh">SH 鍛ㄦ</span><span class="badge badge-daily">GH 鏃ユ</span></div>
+  </div>
+  <p class="card-desc">TypeScript 涓撳 Matt Pocock 寮€婧愮殑涓汉 .claude 鎶€鑳藉簱锛屾敹褰曚簡澶ч噺闈㈠悜瀹炴垬鐨勫紑鍙戞妧宸у拰宸ヤ綔娴併€傚己璋冨伐绋嬬邯寰嬭€岄潪"姘涘洿缂栫▼"锛屾兜鐩?TDD 寰幆銆侀鍩熷缓妯°€佷唬鐮佸鏌ャ€佹灦鏋勫璁＄瓑鐜妭锛屼竴琛屽懡浠ゅ嵆鍙畨瑁呫€?/p>
+  <div class="card-meta">
+    <div class="meta-item"><span class="lang-dot Shell"></span> Shell</div>
+    <div class="meta-item">猸?174,256</div>
+    <span class="license-badge">MIT</span>
+  </div>
+  <div class="stars-info">
+    <span class="star-badge sh">SH 鍛ㄦ +54/鍛?/span>
+    <span class="star-badge daily">鏃ユ +1,679/澶?/span>
+  </div>
+  <div class="tags"><span class="tag">Claude Code 鎶€鑳?/span><span class="tag">TypeScript</span><span class="tag">TDD</span><span class="tag">宸ョ▼瀹炶返</span><span class="tag">寮€鍙戝伐鍏?/span></div>
+</div>
+<div class="project-card" data-stars="122880" data-new="1104" data-name="shubhamsaboo/awesome-llm-apps">
+  <div class="card-header">
+    <a class="repo-link" href="https://github.com/Shubhamsaboo/awesome-llm-apps" target="_blank">Shubhamsaboo/awesome-llm-apps</a>
+    <div class="card-badges"><span class="badge badge-sh">SH 鍛ㄦ</span><span class="badge badge-daily">GH 鏃ユ</span></div>
+  </div>
+  <p class="card-desc">鏀跺綍 100+ 涓彲鐩存帴杩愯鐨?AI Agent 鍜?RAG 搴旂敤妯℃澘锛岃鐩栨梾琛岃鍒掋€侀噾铻嶅垎鏋愩€佽闊冲鏈嶃€佺敓鎴愬紡 UI 绛夊満鏅€傛瘡涓ā鏉块兘鏄鍒扮娴嬭瘯杩囩殑瀹屾暣椤圭洰锛宑lone 涓嬫潵灏辫兘璺戯紝鏄涔?AI 搴旂敤寮€鍙戠殑涓€绔欏紡璧勬簮搴撱€?/p>
+  <div class="card-meta">
+    <div class="meta-item"><span class="lang-dot Python"></span> Python</div>
+    <div class="meta-item">猸?122,880</div>
+    <span class="license-badge">Apache-2.0</span>
+  </div>
+  <div class="stars-info">
+    <span class="star-badge sh">SH 鍛ㄦ +27/鍛?/span>
+    <span class="star-badge daily">鏃ユ +1,104/澶?/span>
+  </div>
+  <div class="tags"><span class="tag">AI Agent</span><span class="tag">RAG</span><span class="tag">LLM 搴旂敤</span><span class="tag">妯℃澘鍚堥泦</span><span class="tag">Python</span></div>
+</div>
+<div class="project-card" data-stars="90078" data-new="21" data-name="juliusbrussee/caveman">
+  <div class="card-header">
+    <a class="repo-link" href="https://github.com/JuliusBrussee/caveman" target="_blank">JuliusBrussee/caveman</a>
+    <div class="card-badges"><span class="badge badge-sh">SH 鍛ㄦ</span><span class="badge badge-daily">GH 鏃ユ</span></div>
+  </div>
+  <p class="card-desc">涓€涓瀬鍏峰垱鎰忕殑 Claude Code 鎶€鑳藉寘鈥斺€旈€氳繃璁?AI 鐢?鍘熷浜?寮忕殑绠€娲佽瑷€浜ゆ祦锛屽ぇ骞呭墛鍑?Token 娑堣€椼€傚疄娴嬪彲鍑忓皯绾?65% 鐨?Token 鐢ㄩ噺锛屽悓鏃朵繚鎸佽緭鍑鸿川閲忎笉鍙橈紝鏄檷浣?AI 缂栫爜鎴愭湰鐨勫阀濡欐柟妗堛€?/p>
+  <div class="card-meta">
+    <div class="meta-item"><span class="lang-dot JavaScript"></span> JavaScript</div>
+    <div class="meta-item">猸?90,078</div>
+    <span class="license-badge">MIT</span>
+  </div>
+  <div class="stars-info">
+    <span class="star-badge sh">SH 鍛ㄦ +21/鍛?/span>
+  </div>
+  <div class="tags"><span class="tag">Token 鍘嬬缉</span><span class="tag">Claude Code</span><span class="tag">鎻愮ず璇嶅伐绋?/span><span class="tag">鎴愭湰浼樺寲</span></div>
+</div>
+<div class="project-card" data-stars="89066" data-new="1641" data-name="graphify-labs/graphify">
+  <div class="card-header">
+    <a class="repo-link" href="https://github.com/Graphify-Labs/graphify" target="_blank">Graphify-Labs/graphify</a>
+    <div class="card-badges"><span class="badge badge-sh">SH 鍛ㄦ</span><span class="badge badge-daily">GH 鏃ユ</span></div>
+  </div>
+  <p class="card-desc">AI 缂栫爜鍔╂墜鎶€鑳斤紝鏀寔 Claude Code銆丆odex銆丆ursor銆丟emini CLI 绛変富娴佸伐鍏枫€傝兘灏嗕换鎰忎唬鐮佹枃浠跺す銆丼QL 妯″紡銆佹枃妗ｃ€佽鏂囥€佸浘鍍忔垨瑙嗛杞崲涓哄彲鏌ヨ鐨勭煡璇嗗浘璋憋紝灏嗗簲鐢ㄤ唬鐮併€佹暟鎹簱鏋舵瀯鍜屽熀纭€璁炬柦缁熶竴鍦ㄤ竴寮犲浘涓€?/p>
+  <div class="card-meta">
+    <div class="meta-item"><span class="lang-dot Python"></span> Python</div>
+    <div class="meta-item">猸?89,066</div>
+    <span class="license-badge">MIT</span>
+  </div>
+  <div class="stars-info">
+    <span class="star-badge sh">SH 鍛ㄦ +29/鍛?/span>
+    <span class="star-badge daily">鏃ユ +1,641/澶?/span>
+  </div>
+  <div class="tags"><span class="tag">鐭ヨ瘑鍥捐氨</span><span class="tag">RAG</span><span class="tag">Claude Code</span><span class="tag">Tree-sitter</span><span class="tag">GraphRAG</span></div>
+</div>
+<div class="project-card" data-stars="84682" data-new="27" data-name="dietrichgebert/ponytail">
+  <div class="card-header">
+    <a class="repo-link" href="https://github.com/DietrichGebert/ponytail" target="_blank">DietrichGebert/ponytail</a>
+    <div class="card-badges"><span class="badge badge-sh">SH 鍛ㄦ</span></div>
+  </div>
+  <p class="card-desc">璁╀綘鐨?AI Agent 鍍?鏈€鎳掔殑璧勬繁寮€鍙戣€?涓€鏍锋€濊€冣€斺€旀牳蹇冨摬瀛︽槸"鏈€濂界殑浠ｇ爜灏辨槸浣犱粠鏈啓杩囩殑浠ｇ爜"銆傞€氳繃鏋佺畝涓讳箟鍜?YAGNI 鍘熷垯绾︽潫 AI 鐨勮繃搴﹁緭鍑猴紝閬垮厤涓嶅繀瑕佺殑浠ｇ爜鐢熸垚锛屾彁楂?AI 缂栫爜鐨勭簿鍑嗗害銆?/p>
+  <div class="card-meta">
+    <div class="meta-item"><span class="lang-dot JavaScript"></span> JavaScript</div>
+    <div class="meta-item">猸?84,682</div>
+    <span class="license-badge">MIT</span>
+  </div>
+  <div class="stars-info">
+    <span class="star-badge sh">SH 鍛ㄦ +27/鍛?/span>
+  </div>
+  <div class="tags"><span class="tag">AI Agent 鎶€鑳?/span><span class="tag">鏋佺畝涓讳箟</span><span class="tag">YAGNI</span><span class="tag">Claude Code</span></div>
+</div>
+<div class="project-card" data-stars="74016" data-new="4276" data-name="opencut-app/opencut">
+  <div class="card-header">
+    <a class="repo-link" href="https://github.com/OpenCut-app/OpenCut" target="_blank">OpenCut-app/OpenCut</a>
+    <div class="card-badges"><span class="badge badge-sh">SH 鍛ㄦ</span><span class="badge badge-daily">GH 鏃ユ</span></div>
+  </div>
+  <p class="card-desc">琚О涓?寮€婧愮増 CapCut锛堝壀鏄狅級"鐨勮棰戠紪杈戝伐鍏凤紝鎻愪緵鏃堕棿杞寸紪杈戙€佺礌鏉愮鐞嗐€佽浆鍦恒€佸瓧骞曠瓑鍔熻兘銆傞」鐩鍏ㄩ潰鐢?Rust 閲嶅啓锛屼竴濂楁牳蹇冮┍鍔ㄦ闈?娴忚鍣?绉诲姩涓夌锛屽唴缃?MCP Server 渚?AI Agent 璋冪敤锛屾敮鎸佹棤澶存ā寮忔壒閲忔覆鏌撱€?/p>
+  <div class="card-meta">
+    <div class="meta-item"><span class="lang-dot TypeScript"></span> TypeScript</div>
+    <div class="meta-item">猸?74,016</div>
+    <span class="license-badge">MIT</span>
+  </div>
+  <div class="stars-info">
+    <span class="star-badge sh">SH 鍛ㄦ +34/鍛?/span>
+    <span class="star-badge daily">鏃ユ +4,276/澶?/span>
+  </div>
+  <div class="tags"><span class="tag">瑙嗛缂栬緫</span><span class="tag">寮€婧?CapCut</span><span class="tag">Rust 閲嶅啓</span><span class="tag">MCP Server</span><span class="tag">璺ㄥ钩鍙?/span></div>
+</div>
+<div class="project-card" data-stars="62182" data-new="156" data-name="virattt/ai-hedge-fund">
+  <div class="card-header">
+    <a class="repo-link" href="https://github.com/virattt/ai-hedge-fund" target="_blank">virattt/ai-hedge-fund</a>
+    <div class="card-badges"><span class="badge badge-daily">GH 鏃ユ</span></div>
+  </div>
+  <p class="card-desc">瀹屽叏鐢?AI Agent 椹卞姩鐨勬ā鎷熷鍐插熀閲戠郴缁熴€傚唴缃?19 涓?Agent鈥斺€?3 涓ā鎷熷反鑿茬壒銆佽姃鏍笺€佸郊寰椔锋灄濂囩瓑鎶曡祫澶у笀椋庢牸鐨勫垎鏋?Agent锛屽姞涓婁及鍊笺€佹儏缁€佸熀鏈潰銆佹妧鏈潰 4 涓噺鍖?Agent锛屾渶鍚庣敱椋庢帶缁忕悊鍜屾姇璧勭粍鍚堢粡鐞嗘媿鏉垮喅绛栥€?/p>
+  <div class="card-meta">
+    <div class="meta-item"><span class="lang-dot Python"></span> Python</div>
+    <div class="meta-item">猸?62,182</div>
+    <span class="license-badge">MIT</span>
+  </div>
+  <div class="stars-info">
+    <span class="star-badge daily">鏃ユ +156/澶?/span>
+  </div>
+  <div class="tags"><span class="tag">AI 瀵瑰啿鍩洪噾</span><span class="tag">Multi-Agent</span><span class="tag">閲忓寲浜ゆ槗</span><span class="tag">閲戣瀺鍒嗘瀽</span></div>
+</div>
+<div class="project-card" data-stars="57148" data-new="31" data-name="1c7/chinese-independent-developer">
+  <div class="card-header">
+    <a class="repo-link" href="https://github.com/1c7/chinese-independent-developer" target="_blank">1c7/chinese-independent-developer</a>
+    <div class="card-badges"><span class="badge badge-sh">SH 鍛ㄦ</span></div>
+  </div>
+  <p class="card-desc">涓浗鐙珛寮€鍙戣€呴」鐩垪琛紝姹囨€诲拰鍒嗕韩鍥藉唴鐙珛寮€鍙戣€呬滑姝ｅ湪鍋氱殑浜у搧鍜岄」鐩€傝鐩?iOS銆丄ndroid銆乄eb銆佸皬绋嬪簭绛夊骞冲彴锛屾槸浜嗚В涓浗鐙珛寮€鍙戣€呯敓鎬佸拰鑾峰彇鐏垫劅鐨勯噸瑕佺ぞ鍖鸿祫婧愩€?/p>
+  <div class="card-meta">
+    <div class="meta-item"><span class="lang-dot Python"></span> Python</div>
+    <div class="meta-item">猸?57,148</div>
+  </div>
+  <div class="stars-info">
+    <span class="star-badge sh">SH 鍛ㄦ +31/鍛?/span>
+  </div>
+  <div class="tags"><span class="tag">涓浗寮€鍙戣€?/span><span class="tag">鐙珛寮€鍙?/span><span class="tag">绀惧尯鍒楄〃</span><span class="tag">浜у搧鍒嗕韩</span></div>
+</div>
+<div class="project-card" data-stars="56622" data-new="395" data-name="penpot/penpot">
+  <div class="card-header">
+    <a class="repo-link" href="https://github.com/penpot/penpot" target="_blank">penpot/penpot</a>
+    <div class="card-badges"><span class="badge badge-daily">GH 鏃ユ</span></div>
+  </div>
+  <p class="card-desc">闈㈠悜浜у搧鍥㈤槦鐨勫紑婧愯璁″钩鍙帮紝琚涓?Figma 鐨勫紑婧愭浛浠ｅ搧銆傞噰鐢?Clojure 缂栧啓锛屾敮鎸?Docker/K8s 鑷墭绠￠儴缃层€傛渶杩戞柊澧?MCP Server 鏀寔锛孉I Agent 鍙洿鎺ユ搷浣滆璁℃枃浠讹紝瀹炵幇"浠ｇ爜-璁捐-浠ｇ爜"鍙屽悜宸ヤ綔娴併€?/p>
+  <div class="card-meta">
+    <div class="meta-item"><span class="lang-dot Cpp"></span> Clojure</div>
+    <div class="meta-item">猸?56,622</div>
+    <span class="license-badge">MPL-2.0</span>
+  </div>
+  <div class="stars-info">
+    <span class="star-badge daily">鏃ユ +395/澶?/span>
+  </div>
+  <div class="tags"><span class="tag">璁捐宸ュ叿</span><span class="tag">寮€婧?Figma</span><span class="tag">MCP Server</span><span class="tag">鑷墭绠?/span><span class="tag">鍗忎綔</span></div>
+</div>
+<div class="project-card" data-stars="52478" data-new="779" data-name="raphire/win11debloat">
+  <div class="card-header">
+    <a class="repo-link" href="https://github.com/Raphire/Win11Debloat" target="_blank">Raphire/Win11Debloat</a>
+    <div class="card-badges"><span class="badge badge-daily">GH 鏃ユ</span></div>
+  </div>
+  <p class="card-desc">杞婚噺绾?PowerShell 鑴氭湰锛屼竴閿嵏杞?Windows 10/11 棰勮搴旂敤銆佸叧闂仴娴嬨€佷紭鍖栫郴缁熻缃€傛敮鎸佷氦浜掑紡鍜岃嚜鍔ㄥ寲涓ょ妯″紡锛屾彁渚涗赴瀵岀殑鑷畾涔夐€夐」锛屾槸 Windows 鐢ㄦ埛绮剧畝绯荤粺鐨勯暱鏈熺儹闂ㄥ伐鍏枫€?/p>
+  <div class="card-meta">
+    <div class="meta-item"><span class="lang-dot Shell"></span> PowerShell</div>
+    <div class="meta-item">猸?52,478</div>
+    <span class="license-badge">MIT</span>
+  </div>
+  <div class="stars-info">
+    <span class="star-badge daily">鏃ユ +779/澶?/span>
+  </div>
+  <div class="tags"><span class="tag">Windows 绮剧畝</span><span class="tag">PowerShell</span><span class="tag">闅愮浼樺寲</span><span class="tag">绯荤粺宸ュ叿</span></div>
+</div>
+<div class="project-card" data-stars="24289" data-new="1256" data-name="hkuds/vibe-trading">
+  <div class="card-header">
+    <a class="repo-link" href="https://github.com/HKUDS/Vibe-Trading" target="_blank">HKUDS/Vibe-Trading</a>
+    <div class="card-badges"><span class="badge badge-daily">GH 鏃ユ</span></div>
+  </div>
+  <p class="card-desc">棣欐腐澶у鏁版嵁绉戝鍥㈤槦鎺ㄥ嚭鐨?AI 绉佷汉浜ゆ槗浠ｇ悊銆傜粨鍚堝ぇ璇█妯″瀷鍒嗘瀽甯傚満淇℃伅銆佸埗瀹氫氦鏄撶瓥鐣ワ紝鏀寔澶?Agent 鍗忎綔瀹屾垚閲忓寲鍒嗘瀽銆佸洖娴嬪拰浜ゆ槗鎵ц锛屾槸杩戞湡鏈€鍙楀叧娉ㄧ殑 AI 閲戣瀺 Agent 椤圭洰涔嬩竴銆?/p>
+  <div class="card-meta">
+    <div class="meta-item"><span class="lang-dot Python"></span> Python</div>
+    <div class="meta-item">猸?24,289</div>
+    <span class="license-badge">MIT</span>
+  </div>
+  <div class="stars-info">
+    <span class="star-badge daily">鏃ユ +1,256/澶?/span>
+  </div>
+  <div class="tags"><span class="tag">AI 浜ゆ槗</span><span class="tag">閲忓寲閲戣瀺</span><span class="tag">Multi-Agent</span><span class="tag">MCP</span><span class="tag">鍥炴祴</span></div>
+</div>
+<div class="project-card" data-stars="18397" data-new="23" data-name="iofficeai/officecli">
+  <div class="card-header">
+    <a class="repo-link" href="https://github.com/iOfficeAI/OfficeCLI" target="_blank">iOfficeAI/OfficeCLI</a>
+    <div class="card-badges"><span class="badge badge-sh">SH 鍛ㄦ</span></div>
+  </div>
+  <p class="card-desc">棣栦釜涓撲负 AI Agent 鎵撻€犵殑鍔炲叕濂椾欢锛屽崟鏂囦欢銆佹棤闇€瀹夎 Office 鍗冲彲璁?AI 璇诲啓 Word銆丒xcel銆丳PT 鏂囦欢銆傛敮鎸?Claude Code銆丆odex 绛変富娴?Agent锛屾槸鑷姩鍖栨姤琛ㄥ拰鍔炲叕鏂囨。澶勭悊鐨勫埄鍣ㄣ€?/p>
+  <div class="card-meta">
+    <div class="meta-item"><span class="lang-dot CSharp"></span> C#</div>
+    <div class="meta-item">猸?18,397</div>
+    <span class="license-badge">Apache-2.0</span>
+  </div>
+  <div class="stars-info">
+    <span class="star-badge sh">SH 鍛ㄦ +23/鍛?/span>
+  </div>
+  <div class="tags"><span class="tag">Office 鑷姩鍖?/span><span class="tag">CLI 宸ュ叿</span><span class="tag">AI Agent</span><span class="tag">鏂囨。澶勭悊</span></div>
+</div>
+<div class="project-card" data-stars="15039" data-new="851" data-name="hasaneyldrm/exercises-dataset">
+  <div class="card-header">
+    <a class="repo-link" href="https://github.com/hasaneyldrm/exercises-dataset" target="_blank">hasaneyldrm/exercises-dataset</a>
+    <div class="card-badges"><span class="badge badge-daily">GH 鏃ユ</span></div>
+  </div>
+  <p class="card-desc">鍖呭惈 1,324 涓仴韬姩浣滅殑楂樿川閲忔暟鎹泦锛屾彁渚涘姩鐢?GIF銆?80x180 缂╃暐鍥俱€佺洰鏍囪倢缇ゃ€佸櫒姊颁俊鎭拰 6 绉嶈瑷€鐨勫垎姝ヨ鏄庛€傚彲鐢ㄤ簬 AI 鍋ヨ韩搴旂敤銆佽繍鍔?App 鎴栬瑙夎瘑鍒」鐩紝鏄?LogPress 搴旂敤鐨勫簳灞傛暟鎹€?/p>
+  <div class="card-meta">
+    <div class="meta-item"><span class="lang-dot HTML"></span> HTML</div>
+    <div class="meta-item">猸?15,039</div>
+  </div>
+  <div class="stars-info">
+    <span class="star-badge daily">鏃ユ +851/澶?/span>
+  </div>
+  <div class="tags"><span class="tag">鍋ヨ韩鏁版嵁闆?/span><span class="tag">杩愬姩鍔ㄧ敾</span><span class="tag">澶氳瑷€</span><span class="tag">AI 鍋ヨ韩</span></div>
+</div>
+<div class="project-card" data-stars="10896" data-new="1010" data-name="nutlope/hallmark">
+  <div class="card-header">
+    <a class="repo-link" href="https://github.com/Nutlope/hallmark" target="_blank">Nutlope/hallmark</a>
+    <div class="card-badges"><span class="badge badge-daily">GH 鏃ユ</span></div>
+  </div>
+  <p class="card-desc">涓撲负 Claude Code銆丆ursor 鍜?Codex 鎵撻€犵殑鍙?AI 鍛宠璁¤鑼冩妧鑳姐€傚唴缃?20 濂椾富棰樸€?7 閬?slop-test 妫€娴嬪叧鍗★紝纭繚 AI 鐢熸垚鐨勭晫闈㈠憡鍒崈绡囦竴寰嬬殑榛樿瀹＄編銆傛敮鎸?build銆乤udit銆乺edesign銆乻tudy 鍥涚宸ヤ綔妯″紡銆?/p>
+  <div class="card-meta">
+    <div class="meta-item"><span class="lang-dot CSS"></span> CSS</div>
+    <div class="meta-item">猸?10,896</div>
+    <span class="license-badge">MIT</span>
+  </div>
+  <div class="stars-info">
+    <span class="star-badge daily">鏃ユ +1,010/澶?/span>
+  </div>
+  <div class="tags"><span class="tag">鍙?AI 鍛宠璁?/span><span class="tag">Claude Code</span><span class="tag">璁捐瑙勮寖</span><span class="tag">Cursor</span><span class="tag">Codex</span></div>
+</div>
+<div class="project-card" data-stars="5024" data-new="473" data-name="dicklesworthstone/destructive_command_guard">
+  <div class="card-header">
+    <a class="repo-link" href="https://github.com/Dicklesworthstone/destructive_command_guard" target="_blank">Dicklesworthstone/destructive_command_guard</a>
+    <div class="card-badges"><span class="badge badge-daily">GH 鏃ユ</span></div>
+  </div>
+  <p class="card-desc">涓?AI 缂栫▼ Agent 瑁呬笂"闃茶鍒犳姢鏍?鐨勫畨鍏ㄥ伐鍏枫€傝兘鍦ㄤ簹姣绾у欢杩熷唴鎷︽埅 rm -rf銆乬it reset --hard銆乲ubectl delete namespace 绛夌牬鍧忔€у懡浠わ紝榛樿 fail-open 缁濅笉浼氬洜鑷韩 bug 鍗′綇宸ヤ綔娴併€傚唴缃?50+ 瀹夊叏鍖呰鐩栧嚑涔庢墍鏈夎繍缁村満鏅€?/p>
+  <div class="card-meta">
+    <div class="meta-item"><span class="lang-dot Rust"></span> Rust</div>
+    <div class="meta-item">猸?5,024</div>
+    <span class="license-badge">MIT</span>
+  </div>
+  <div class="stars-info">
+    <span class="star-badge daily">鏃ユ +473/澶?/span>
+  </div>
+  <div class="tags"><span class="tag">瀹夊叏闃叉姢</span><span class="tag">AI Agent</span><span class="tag">鍛戒护鎷︽埅</span><span class="tag">Git 瀹夊叏</span><span class="tag">Rust</span></div>
+</div>
+</div>
+
+<!-- 编程语言分布统计 -->
+<h2>编程语言分布</h2>
+<table class="data-table">
+<thead>
+<tr><th>语言</th><th>项目数</th><th>项目列表</th><th>占比</th></tr>
+</thead>
+<tbody>
+<tr><td><div class="lang-cell"><span class="lang-dot Python"></span> Python</div></td><td>5</td><td>awesome-llm-apps, graphify, chinese-independent-developer, Vibe-Trading, ai-hedge-fund</td><td>29.4%</td></tr>
+<tr><td><div class="lang-cell"><span class="lang-dot JavaScript"></span> JavaScript</div></td><td>2</td><td>ponytail, caveman</td><td>11.8%</td></tr>
+<tr><td><div class="lang-cell"><span class="lang-dot Shell"></span> Shell</div></td><td>2</td><td>superpowers, skills</td><td>11.8%</td></tr>
+<tr><td><div class="lang-cell"><span class="lang-dot TypeScript"></span> TypeScript</div></td><td>1</td><td>OpenCut</td><td>5.9%</td></tr>
+<tr><td><div class="lang-cell"><span class="lang-dot Rust"></span> Rust</div></td><td>1</td><td>destructive_command_guard</td><td>5.9%</td></tr>
+<tr><td><div class="lang-cell"><span class="lang-dot CSS"></span> CSS</div></td><td>1</td><td>hallmark</td><td>5.9%</td></tr>
+<tr><td><div class="lang-cell"><span class="lang-dot CSharp"></span> C#</div></td><td>1</td><td>OfficeCLI</td><td>5.9%</td></tr>
+<tr><td><div class="lang-cell"><span class="lang-dot HTML"></span> HTML</div></td><td>1</td><td>exercises-dataset</td><td>5.9%</td></tr>
+<tr><td><div class="lang-cell"><span class="lang-dot Shell"></span> PowerShell</div></td><td>1</td><td>Win11Debloat</td><td>5.9%</td></tr>
+<tr><td><div class="lang-cell">Clojure</div></td><td>1</td><td>penpot</td><td>5.9%</td></tr>
+</tbody>
+</table>
+
+<!-- 功能领域分类 -->
+<h2>功能领域分类</h2>
+<table class="data-table">
+<thead>
+<tr><th>领域</th><th>项目数</th><th>Star 合计</th><th>代表项目</th></tr>
+</thead>
+<tbody>
+<tr><td>AI Agent 鎶€鑳?/td><td>8</td><td>1,055,828</td><td>superpowers, skills, awesome-llm-apps</td></tr>
+<tr><td>鍒涙剰宸ュ叿</td><td>2</td><td>130,638</td><td>OpenCut, penpot</td></tr>
+<tr><td>AI 閲戣瀺</td><td>2</td><td>86,471</td><td>ai-hedge-fund, Vibe-Trading</td></tr>
+<tr><td>寮€鍙戝伐鍏?/td><td>2</td><td>146,214</td><td>graphify, chinese-independent-developer</td></tr>
+<tr><td>瀹夊叏</td><td>1</td><td>5,024</td><td>destructive_command_guard</td></tr>
+<tr><td>绯荤粺宸ュ叿</td><td>1</td><td>52,478</td><td>Win11Debloat</td></tr>
+<tr><td>鍔炲叕鑷姩鍖?/td><td>1</td><td>18,397</td><td>OfficeCLI</td></tr>
+<tr><td>鏁版嵁/璧勬簮</td><td>1</td><td>15,039</td><td>exercises-dataset</td></tr>
+</tbody>
+</table>
+
+<!-- 关键洞察 -->
+<h2>关键洞察</h2>
+<ul class="insights-list">
+<li data-num="1"><strong>AI Agent 鎶€鑳界敓鎬佸叏闈㈢垎鍙戯細</strong>鏈湡 17 涓」鐩腑锛? 涓洿鎺ュ睘浜?Agent 鎶€鑳借禌閬擄紙superpowers銆乻kills銆乤ndrej-karpathy-skills銆乧aveman銆乸onytail銆乭allmark銆乬raphify銆乤wesome-llm-apps锛夛紝鍗犳瘮鎺ヨ繎涓€鍗娿€係kills 姝ｅ湪鎴愪负 AI Agent 鐢熸€佺殑鏍囧噯鎵╁睍鏂瑰紡锛屼粠"鑷繁鍐欒剼鏈?杩涘寲涓?鏍囧噯鍖栧畨瑁呭寘"銆?/li>
+<li data-num="2"><strong>AI 瀹夊叏宸ュ叿寮傚啗绐佽捣锛?/strong>destructive_command_guard 鐢?Rust 鏋勫缓浜氭绉掔骇鍛戒护鎷︽埅锛屽弽鏄犲嚭闅忕潃 Agent 鑳藉姏澧炲己锛屽畨鍏ㄩ槻鎶ら渶姹傛€ュ墽涓婂崌銆侫I 瀹夊叏璧涢亾棰勮灏嗘垚涓轰笅鍗婂勾鐨勬柊澧為暱鐐广€?/li>
+<li data-num="3"><strong>寮€婧愬垱浣滃伐鍏峰揩閫熷崌娓╋細</strong>OpenCut 瀹ｅ竷 Rust 閲嶅啓鍚庢棩澧?Star 鏆村鑷?4,276锛宲enpot 鏂板 MCP Server 鏀寔銆傚紑婧愬垱浣滃伐鍏锋鍦ㄤ粠"鏇夸唬鍝?杩涘寲涓?AI 鍘熺敓鍒涗綔骞冲彴"銆?/li>
+<li data-num="4"><strong>Token 鏁堢巼涓庡弽 AI 鍛虫垚涓烘柊璇夋眰锛?/strong>caveman 閫氳繃"鍘熷浜鸿娉?鍓婂噺 65% Token 娑堣€楋紝hallmark 鐢?57 閬撴娴嬪叧鍗℃秷鐏?AI 鐢熸垚鐨勮璁?濉戞枡鍛?銆傚紑鍙戣€呬笉鍐嶅彧杩芥眰 AI"鑳藉仛"锛屾洿杩芥眰"鍋氬緱濂姐€佸仛寰楃渷"銆?/li>
+<li data-num="5"><strong>AI 閲戣瀺 Agent 鎸佺画鐏儹锛?/strong>Vibe-Trading 鏃ュ 1,256 鏄熴€乤i-hedge-fund 鎬绘槦绐佺牬 6.2 涓囥€侻ulti-Agent 鍗忎綔鍦ㄩ噾铻嶅満鏅殑钀藉湴姝ｅ湪鍔犻€燂紝浠庢ā鎷熷垎鏋愯蛋鍚戝疄闄呬氦鏄撹緟鍔┿€?/li>
+</ul>
+
+<!-- 底部 -->
+<div class="footer">
+  <p>数据来源：Star History Weekly Top 10 / GitHub Trending Daily Top 10 / GitHub Trending Weekly Top 10</p>
+  <p>采集时间：2026-07-17 | 由 TRAE 自动生成</p>
+</div>
+
+<script>
+function sortCards(by) {
+  const grid = document.getElementById('projectsGrid');
+  const cards = Array.from(grid.querySelectorAll('.project-card'));
+  document.querySelectorAll('.sort-btn').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+  cards.sort((a, b) => {
+    if (by === 'stars') return parseInt(b.dataset.stars) - parseInt(a.dataset.stars);
+    if (by === 'new') return parseInt(b.dataset.new) - parseInt(a.dataset.new);
+    if (by === 'name') return a.dataset.name.localeCompare(b.dataset.name);
+    return 0;
+  });
+  cards.forEach(c => grid.appendChild(c));
+}
+</script>
+
+</body>
+</html>
